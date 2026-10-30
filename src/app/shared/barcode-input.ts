@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, input, output, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 
@@ -20,7 +20,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
           [placeholder]="'actions.typeBarcode' | transloco"
           [(ngModel)]="code"
         />
-        <button class="btn btn-primary" type="submit">{{ 'actions.confirm' | transloco }}</button>
+        <button class="btn btn-primary" type="submit">{{ submitKey() | transloco }}</button>
       </form>
 
       <button type="button" class="btn btn-secondary w-full sm:w-auto" (click)="cameraOn() ? stop() : start()">
@@ -43,6 +43,10 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class BarcodeInput implements OnDestroy {
   scanned = output<string>();
+  /** Stop the camera after the first successful read (used when registering a single item). */
+  autoStop = input(false);
+  /** Label of the submit button for the typed code. */
+  submitKey = input('actions.confirm');
   code = '';
   cameraOn = signal(false);
   cameraError = signal(false);
@@ -73,6 +77,7 @@ export class BarcodeInput implements OnDestroy {
         this.lastCode = text;
         this.lastAt = now;
         this.scanned.emit(text);
+        if (this.autoStop()) this.stop();
       });
     } catch {
       this.cameraOn.set(false);

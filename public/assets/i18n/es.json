@@ -52,7 +52,16 @@
     "status": "Estado",
     "holder": "Con",
     "save": "Guardar",
-    "empty": "No se encontraron materiales."
+    "empty": "No se encontraron materiales.",
+    "cancel": "Cancelar",
+    "addTitle": "Registrar nuevo artículo",
+    "scanBarcode": "Escanee o escriba el código de barras único de este artículo",
+    "useCode": "Usar código",
+    "noBarcode": "aún no se ha leído ningún código",
+    "saved": "Artículo registrado",
+    "error": {
+      "barcodeDuplicate": "Este código de barras ya está en uso. Cada artículo necesita un código único."
+    }
   },
   "coworkers": {
     "title": "Compañeros",

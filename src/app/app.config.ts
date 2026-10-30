@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideTransloco({
       config: {
         availableLangs: ['en', 'pt-BR', 'es'],
-        defaultLang: 'en',
+        defaultLang: 'pt-BR',
         fallbackLang: 'en',
         reRenderOnLangChange: true,
         prodMode: !isDevMode(),

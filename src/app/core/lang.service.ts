@@ -2,29 +2,25 @@ import { Injectable, inject } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 
 export const LANGS = [
-  { code: 'en', label: 'English' },
   { code: 'pt-BR', label: 'Português (BR)' },
+  { code: 'en', label: 'English' },
   { code: 'es', label: 'Español' },
 ] as const;
 
 const KEY = 'uniflow.lang';
+const DEFAULT_LANG = 'pt-BR';
 
 @Injectable({ providedIn: 'root' })
 export class LangService {
   private transloco = inject(TranslocoService);
 
+  /** Portuguese (BR) is the default; a language the user picked earlier is remembered. */
   init() {
     let lang: string | null = null;
     try {
       lang = localStorage.getItem(KEY);
     } catch {}
-    if (!lang) {
-      const nav = navigator.language || 'en';
-      lang = LANGS.find((l) => l.code.toLowerCase() === nav.toLowerCase())?.code
-        ?? LANGS.find((l) => l.code.split('-')[0] === nav.split('-')[0])?.code
-        ?? 'en';
-    }
-    this.set(lang);
+    this.set(LANGS.some((l) => l.code === lang) ? lang! : DEFAULT_LANG);
   }
 
   set(lang: string) {

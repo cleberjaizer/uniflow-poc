@@ -52,7 +52,16 @@
     "status": "Status",
     "holder": "Com",
     "save": "Salvar",
-    "empty": "Nenhum material encontrado."
+    "empty": "Nenhum material encontrado.",
+    "cancel": "Cancelar",
+    "addTitle": "Cadastrar novo item",
+    "scanBarcode": "Escaneie ou digite o código de barras exclusivo deste item",
+    "useCode": "Usar código",
+    "noBarcode": "nenhum código lido ainda",
+    "saved": "Item cadastrado",
+    "error": {
+      "barcodeDuplicate": "Este código de barras já está em uso. Cada item precisa de um código exclusivo."
+    }
   },
   "coworkers": {
     "title": "Colegas",

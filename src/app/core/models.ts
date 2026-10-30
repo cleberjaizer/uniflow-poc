@@ -30,3 +30,7 @@ export type ActionError = 'notFound' | 'invalidState' | 'coworkerRequired';
 export type ActionResult =
   | { ok: true; material: Material; coworker?: Coworker }
   | { ok: false; error: ActionError };
+
+export type RegisterResult =
+  | { ok: true; material: Material }
+  | { ok: false; error: 'barcodeRequired' | 'barcodeDuplicate' };

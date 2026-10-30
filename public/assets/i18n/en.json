@@ -52,7 +52,16 @@
     "status": "Status",
     "holder": "With",
     "save": "Save",
-    "empty": "No materials found."
+    "empty": "No materials found.",
+    "cancel": "Cancel",
+    "addTitle": "Register new item",
+    "scanBarcode": "Scan or type this item's unique barcode",
+    "useCode": "Use code",
+    "noBarcode": "no barcode read yet",
+    "saved": "Item registered",
+    "error": {
+      "barcodeDuplicate": "This barcode is already in use. Each item needs a unique barcode."
+    }
   },
   "coworkers": {
     "title": "Co-workers",

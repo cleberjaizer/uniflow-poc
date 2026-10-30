@@ -1,5 +1,5 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { ActionResult, ActionType, Coworker, HistoryEntry, Material } from './models';
+import { ActionResult, ActionType, Coworker, HistoryEntry, Material, RegisterResult } from './models';
 
 const KEY = 'uniflow.data.v1';
 
@@ -105,19 +105,28 @@ export class DataService {
     return code;
   }
 
-  registerMaterial(name: string, category: string): Material {
+  /** True if the code is already used by any material or co-worker label (case-insensitive). */
+  barcodeInUse(barcode: string) {
+    return !!this.findMaterial(barcode) || !!this.findCoworker(barcode);
+  }
+
+  /** Registers a new item. The barcode is scanned or typed by the user and must be unique. */
+  registerMaterial(name: string, category: string, barcode: string): RegisterResult {
+    const code = barcode.trim();
+    if (!code) return { ok: false, error: 'barcodeRequired' };
+    if (this.barcodeInUse(code)) return { ok: false, error: 'barcodeDuplicate' };
     const s = this.store();
     const material: Material = {
       id: `m${Date.now()}`,
       name: name.trim(),
       category: category.trim(),
-      barcode: this.nextBarcode('MAT', s.materials.map((m) => m.barcode)),
+      barcode: code,
       registeredAt: new Date().toISOString(),
       status: 'available',
     };
     const entry: HistoryEntry = { id: `h${Date.now()}`, at: material.registeredAt, type: 'registry', materialId: material.id };
     this.commit({ ...s, materials: [...s.materials, material], history: [...s.history, entry] });
-    return material;
+    return { ok: true, material };
   }
 
   registerCoworker(name: string): Coworker {
