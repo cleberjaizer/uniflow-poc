@@ -1,0 +1,90 @@
+{
+  "lang.label": "Language",
+  "nav": {
+    "dashboard": "Dashboard",
+    "materials": "Materials",
+    "coworkers": "Co-workers",
+    "actions": "Scan",
+    "logout": "Log out"
+  },
+  "login": {
+    "subtitle": "Barcode label manager",
+    "username": "User name",
+    "button": "Log in",
+    "demoNote": "Demo – no password"
+  },
+  "common": {
+    "resetDemo": "Reset demo data"
+  },
+  "status": {
+    "available": "Available",
+    "checkedOut": "Checked out",
+    "inLaundry": "In laundry"
+  },
+  "history": {
+    "registry": "Registered",
+    "checkout": "Check-out",
+    "checkin": "Check-in",
+    "laundryIn": "Sent to laundry",
+    "laundryOut": "Back from laundry"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "total": "Total items",
+    "history": "Movement history",
+    "search": "Search…",
+    "filterAll": "All actions",
+    "empty": "No records found.",
+    "col": {
+      "date": "Date",
+      "action": "Action",
+      "item": "Item",
+      "coworker": "Co-worker"
+    }
+  },
+  "materials": {
+    "title": "Materials",
+    "add": "Add material",
+    "name": "Name",
+    "category": "Category",
+    "barcode": "Barcode",
+    "registered": "Registered",
+    "status": "Status",
+    "holder": "With",
+    "save": "Save",
+    "empty": "No materials found."
+  },
+  "coworkers": {
+    "title": "Co-workers",
+    "add": "Add co-worker",
+    "name": "Name",
+    "itemsHeld": "Items held"
+  },
+  "actions": {
+    "title": "Scan & register",
+    "checkout": "Item check-out",
+    "checkoutDesc": "Co-worker takes the item",
+    "checkin": "Item check-in",
+    "checkinDesc": "Co-worker returns the item",
+    "laundryIn": "Laundry check-in",
+    "laundryInDesc": "Item sent to laundry",
+    "laundryOut": "Laundry check-out",
+    "laundryOutDesc": "Item received from laundry",
+    "coworker": "Co-worker",
+    "selectCoworker": "Select a co-worker…",
+    "scan": "Scan or type the item barcode",
+    "typeBarcode": "Barcode (e.g. MAT-0001)",
+    "confirm": "Confirm",
+    "useCamera": "Use camera",
+    "stopCamera": "Stop camera",
+    "cameraError": "Could not access the camera. Check permissions or type the code.",
+    "lastResult": "Last result",
+    "noResult": "Nothing scanned yet.",
+    "success": "Action registered",
+    "error": {
+      "notFound": "Barcode not found.",
+      "invalidState": "This item's current status does not allow this action.",
+      "coworkerRequired": "Select a co-worker first."
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "lang.label": "Idioma",
+  "nav": {
+    "dashboard": "Panel",
+    "materials": "Materiales",
+    "coworkers": "Compañeros",
+    "actions": "Escanear",
+    "logout": "Salir"
+  },
+  "login": {
+    "subtitle": "Gestor de etiquetas con código de barras",
+    "username": "Nombre de usuario",
+    "button": "Entrar",
+    "demoNote": "Demo – sin contraseña"
+  },
+  "common": {
+    "resetDemo": "Restablecer datos de demostración"
+  },
+  "status": {
+    "available": "Disponible",
+    "checkedOut": "Entregado",
+    "inLaundry": "En lavandería"
+  },
+  "history": {
+    "registry": "Registrado",
+    "checkout": "Salida",
+    "checkin": "Devolución",
+    "laundryIn": "Enviado a lavandería",
+    "laundryOut": "Regresó de lavandería"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "total": "Total de artículos",
+    "history": "Historial de movimientos",
+    "search": "Buscar…",
+    "filterAll": "Todas las acciones",
+    "empty": "No se encontraron registros.",
+    "col": {
+      "date": "Fecha",
+      "action": "Acción",
+      "item": "Artículo",
+      "coworker": "Compañero"
+    }
+  },
+  "materials": {
+    "title": "Materiales",
+    "add": "Agregar material",
+    "name": "Nombre",
+    "category": "Categoría",
+    "barcode": "Código de barras",
+    "registered": "Registro",
+    "status": "Estado",
+    "holder": "Con",
+    "save": "Guardar",
+    "empty": "No se encontraron materiales."
+  },
+  "coworkers": {
+    "title": "Compañeros",
+    "add": "Agregar compañero",
+    "name": "Nombre",
+    "itemsHeld": "Artículos en su poder"
+  },
+  "actions": {
+    "title": "Escanear y registrar",
+    "checkout": "Salida del artículo",
+    "checkoutDesc": "El compañero retira el artículo",
+    "checkin": "Devolución del artículo",
+    "checkinDesc": "El compañero devuelve el artículo",
+    "laundryIn": "Entrada a lavandería",
+    "laundryInDesc": "Artículo enviado a lavandería",
+    "laundryOut": "Salida de lavandería",
+    "laundryOutDesc": "Artículo recibido de lavandería",
+    "coworker": "Compañero",
+    "selectCoworker": "Seleccione un compañero…",
+    "scan": "Escanee o escriba el código de barras del artículo",
+    "typeBarcode": "Código (ej.: MAT-0001)",
+    "confirm": "Confirmar",
+    "useCamera": "Usar cámara",
+    "stopCamera": "Detener cámara",
+    "cameraError": "No se pudo acceder a la cámara. Revise los permisos o escriba el código.",
+    "lastResult": "Último resultado",
+    "noResult": "Aún no se ha escaneado nada.",
+    "success": "Acción registrada",
+    "error": {
+      "notFound": "Código de barras no encontrado.",
+      "invalidState": "El estado actual del artículo no permite esta acción.",
+      "coworkerRequired": "Seleccione un compañero primero."
+    }
+  }
+}

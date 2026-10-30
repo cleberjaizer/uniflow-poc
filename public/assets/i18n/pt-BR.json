@@ -1,0 +1,90 @@
+{
+  "lang.label": "Idioma",
+  "nav": {
+    "dashboard": "Painel",
+    "materials": "Materiais",
+    "coworkers": "Colegas",
+    "actions": "Escanear",
+    "logout": "Sair"
+  },
+  "login": {
+    "subtitle": "Gerenciador de etiquetas com código de barras",
+    "username": "Nome de usuário",
+    "button": "Entrar",
+    "demoNote": "Demo – sem senha"
+  },
+  "common": {
+    "resetDemo": "Restaurar dados de demonstração"
+  },
+  "status": {
+    "available": "Disponível",
+    "checkedOut": "Retirado",
+    "inLaundry": "Na lavanderia"
+  },
+  "history": {
+    "registry": "Cadastrado",
+    "checkout": "Retirada",
+    "checkin": "Devolução",
+    "laundryIn": "Enviado à lavanderia",
+    "laundryOut": "Voltou da lavanderia"
+  },
+  "dashboard": {
+    "title": "Painel",
+    "total": "Total de itens",
+    "history": "Histórico de movimentações",
+    "search": "Buscar…",
+    "filterAll": "Todas as ações",
+    "empty": "Nenhum registro encontrado.",
+    "col": {
+      "date": "Data",
+      "action": "Ação",
+      "item": "Item",
+      "coworker": "Colega"
+    }
+  },
+  "materials": {
+    "title": "Materiais",
+    "add": "Adicionar material",
+    "name": "Nome",
+    "category": "Categoria",
+    "barcode": "Código de barras",
+    "registered": "Cadastro",
+    "status": "Status",
+    "holder": "Com",
+    "save": "Salvar",
+    "empty": "Nenhum material encontrado."
+  },
+  "coworkers": {
+    "title": "Colegas",
+    "add": "Adicionar colega",
+    "name": "Nome",
+    "itemsHeld": "Itens em posse"
+  },
+  "actions": {
+    "title": "Escanear e registrar",
+    "checkout": "Retirada do item",
+    "checkoutDesc": "O colega pega o item",
+    "checkin": "Devolução do item",
+    "checkinDesc": "O colega devolve o item",
+    "laundryIn": "Entrada na lavanderia",
+    "laundryInDesc": "Item enviado à lavanderia",
+    "laundryOut": "Saída da lavanderia",
+    "laundryOutDesc": "Item recebido da lavanderia",
+    "coworker": "Colega",
+    "selectCoworker": "Selecione um colega…",
+    "scan": "Escaneie ou digite o código de barras do item",
+    "typeBarcode": "Código (ex.: MAT-0001)",
+    "confirm": "Confirmar",
+    "useCamera": "Usar câmera",
+    "stopCamera": "Parar câmera",
+    "cameraError": "Não foi possível acessar a câmera. Verifique as permissões ou digite o código.",
+    "lastResult": "Último resultado",
+    "noResult": "Nada escaneado ainda.",
+    "success": "Ação registrada",
+    "error": {
+      "notFound": "Código de barras não encontrado.",
+      "invalidState": "O status atual do item não permite esta ação.",
+      "coworkerRequired": "Selecione um colega primeiro."
+    }
+  }
+}
