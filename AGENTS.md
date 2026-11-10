@@ -1,6 +1,6 @@
 # UniFlow
 
-Barcode label manager (demo / POC) for materials, co-workers and laundry flow.
+EPI flow control (demo / POC) for materials, co-workers and laundry flow.
 
 ## Stack
 

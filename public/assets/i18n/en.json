@@ -9,7 +9,7 @@
     "logout": "Log out"
   },
   "login": {
-    "subtitle": "Barcode label manager",
+    "subtitle": "EPI flow control",
     "username": "User name",
     "email": "Email",
     "emailPlaceholder": "Enter your email",

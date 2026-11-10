@@ -1,6 +1,6 @@
 # UniFlow
 
-Barcode label manager (demo / POC). Angular + TypeScript + Tailwind CSS, installable as a PWA, multi-language (en, pt-BR, es).
+EPI flow control (demo / POC). Angular + TypeScript + Tailwind CSS, installable as a PWA, multi-language (en, pt-BR, es).
 First version has **no backend**: all data is demo data kept in the browser (localStorage).
 
 ## Run locally

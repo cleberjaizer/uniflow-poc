@@ -9,7 +9,7 @@
     "logout": "Salir"
   },
   "login": {
-    "subtitle": "Gestor de etiquetas con código de barras",
+    "subtitle": "Control de flujo de EPP",
     "username": "Nombre de usuario",
     "email": "Correo electrónico",
     "emailPlaceholder": "Ingrese su correo",

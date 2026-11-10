@@ -9,7 +9,7 @@
     "logout": "Sair"
   },
   "login": {
-    "subtitle": "Gerenciador de etiquetas com código de barras",
+    "subtitle": "Controle de fluxo de EPIs",
     "username": "Nome de usuário",
     "email": "E-mail",
     "emailPlaceholder": "Digite seu e-mail",
