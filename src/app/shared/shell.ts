@@ -1,8 +1,15 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../core/auth.service';
-import { LANGS, LangService } from '../core/lang.service';
+import { UserRole } from '../core/models';
+
+interface NavItem {
+  path: string;
+  key: string;
+  icon: string;
+  roles?: UserRole[];
+}
 
 @Component({
   selector: 'app-shell',
@@ -15,7 +22,7 @@ import { LANGS, LangService } from '../core/lang.service';
           <a routerLink="/dashboard" class="text-lg font-bold text-brand-600">UniFlow</a>
 
           <nav class="ml-6 hidden gap-1 md:flex">
-            @for (n of nav; track n.path) {
+            @for (n of visibleNav(); track n.path) {
               <a
                 [routerLink]="n.path"
                 routerLinkActive="bg-brand-50 text-brand-700"
@@ -25,19 +32,18 @@ import { LANGS, LangService } from '../core/lang.service';
             }
           </nav>
 
-          <div class="ml-auto flex items-center gap-2">
-            <select
-              class="input !w-auto !py-1.5"
-              [value]="lang.active"
-              (change)="lang.set($any($event.target).value)"
-              [attr.aria-label]="'lang.label' | transloco"
-            >
-              @for (l of langs; track l.code) {
-                <option [value]="l.code">{{ l.label }}</option>
-              }
-            </select>
-            <span class="hidden text-sm text-slate-500 sm:inline">{{ auth.user() }}</span>
-            <button class="btn btn-secondary !px-3 !py-1.5" (click)="logout()">{{ 'nav.logout' | transloco }}</button>
+          <div class="ml-auto flex items-center gap-3">
+            @if (auth.user(); as u) {
+              <div class="hidden flex-col items-end text-right sm:flex">
+                <span class="text-xs font-semibold text-slate-800">{{ u.name }}</span>
+                <span class="text-[10px] font-bold uppercase tracking-wide text-brand-600">
+                  {{ 'role.' + u.role | transloco }}
+                </span>
+              </div>
+            }
+            <button class="btn btn-secondary !px-3 !py-1.5" (click)="logout()">
+              {{ 'nav.logout' | transloco }}
+            </button>
           </div>
         </div>
       </header>
@@ -47,14 +53,14 @@ import { LANGS, LangService } from '../core/lang.service';
       </main>
 
       <nav
-        class="fixed inset-x-0 bottom-0 z-20 grid grid-cols-4 border-t border-slate-200 bg-white md:hidden"
+        class="fixed inset-x-0 bottom-0 z-20 flex border-t border-slate-200 bg-white md:hidden"
         style="padding-bottom: env(safe-area-inset-bottom)"
       >
-        @for (n of mobileNav; track n.path) {
+        @for (n of visibleNav(); track n.path) {
           <a
             [routerLink]="n.path"
             routerLinkActive="text-brand-600 font-semibold"
-            class="flex flex-col items-center gap-0.5 py-2 text-xs text-slate-500"
+            class="flex flex-1 flex-col items-center gap-0.5 py-2 text-xs text-slate-500"
           >
             <span class="text-lg" aria-hidden="true">{{ n.icon }}</span>
             {{ n.key | transloco }}
@@ -66,17 +72,19 @@ import { LANGS, LangService } from '../core/lang.service';
 })
 export class Shell {
   auth = inject(AuthService);
-  lang = inject(LangService);
   private router = inject(Router);
-  langs = LANGS;
 
-  nav = [
+  nav: NavItem[] = [
     { path: '/dashboard', key: 'nav.dashboard', icon: '📊' },
     { path: '/materials', key: 'nav.materials', icon: '📦' },
     { path: '/coworkers', key: 'nav.coworkers', icon: '👥' },
     { path: '/actions', key: 'nav.actions', icon: '📷' },
+    { path: '/settings', key: 'nav.settings', icon: '⚙️' },
   ];
-  mobileNav = this.nav;
+
+  visibleNav = computed(() => {
+    return this.nav.filter((n) => !n.roles || this.auth.hasRole(n.roles));
+  });
 
   logout() {
     this.auth.logout();

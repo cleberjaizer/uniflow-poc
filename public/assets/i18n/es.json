@@ -5,16 +5,29 @@
     "materials": "Materiales",
     "coworkers": "Compañeros",
     "actions": "Escanear",
+    "settings": "Configuración",
     "logout": "Salir"
   },
   "login": {
     "subtitle": "Gestor de etiquetas con código de barras",
     "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingrese su correo",
     "button": "Entrar",
-    "demoNote": "Demo – sin contraseña"
+    "demoNote": "Demo – sin contraseña",
+    "error": {
+      "unauthorized": "Solo usuarios autorizados pueden acceder al sistema."
+    }
+  },
+  "role": {
+    "admin": "Admin",
+    "user": "Usuario"
   },
   "common": {
-    "resetDemo": "Restablecer datos de demostración"
+    "resetDemo": "Restablecer datos de demostración",
+    "save": "Guardar",
+    "barcode": "Código de barras",
+    "registered": "Registro"
   },
   "status": {
     "available": "Disponible",
@@ -65,7 +78,7 @@
   },
   "coworkers": {
     "title": "Compañeros",
-    "add": "Agregar compañero",
+    "add": "Agregar",
     "name": "Nombre",
     "itemsHeld": "Artículos en su poder"
   },
@@ -95,5 +108,14 @@
       "invalidState": "El estado actual del artículo no permite esta acción.",
       "coworkerRequired": "Seleccione un compañero primero."
     }
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "languageDesc": "Elija el idioma de visualización del sistema.",
+    "account": "Información de la cuenta",
+    "role": "Nivel de acceso",
+    "about": "Acerca de UniFlow",
+    "version": "Versión"
   }
 }

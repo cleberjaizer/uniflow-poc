@@ -23,7 +23,11 @@ import { TranslocoPipe } from '@jsverse/transloco';
         <button class="btn btn-primary" type="submit">{{ submitKey() | transloco }}</button>
       </form>
 
-      <button type="button" class="btn btn-secondary w-full sm:w-auto" (click)="cameraOn() ? stop() : start()">
+      <button
+        type="button"
+        class="btn btn-secondary w-full sm:w-auto"
+        (click)="cameraOn() ? stop() : start()"
+      >
         📷 {{ (cameraOn() ? 'actions.stopCamera' : 'actions.useCamera') | transloco }}
       </button>
 
@@ -69,16 +73,20 @@ export class BarcodeInput implements OnDestroy {
       const { BrowserMultiFormatReader } = await import('@zxing/browser');
       const reader = new BrowserMultiFormatReader();
       this.cameraOn.set(true);
-      this.controls = await reader.decodeFromVideoDevice(undefined, this.video().nativeElement, (result) => {
-        if (!result) return;
-        const text = result.getText();
-        const now = Date.now();
-        if (text === this.lastCode && now - this.lastAt < 2500) return; // ignore repeat reads
-        this.lastCode = text;
-        this.lastAt = now;
-        this.scanned.emit(text);
-        if (this.autoStop()) this.stop();
-      });
+      this.controls = await reader.decodeFromVideoDevice(
+        undefined,
+        this.video().nativeElement,
+        (result) => {
+          if (!result) return;
+          const text = result.getText();
+          const now = Date.now();
+          if (text === this.lastCode && now - this.lastAt < 2500) return; // ignore repeat reads
+          this.lastCode = text;
+          this.lastAt = now;
+          this.scanned.emit(text);
+          if (this.autoStop()) this.stop();
+        },
+      );
     } catch {
       this.cameraOn.set(false);
       this.cameraError.set(true);

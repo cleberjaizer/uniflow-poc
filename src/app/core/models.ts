@@ -28,9 +28,20 @@ export interface HistoryEntry {
 
 export type ActionError = 'notFound' | 'invalidState' | 'coworkerRequired';
 export type ActionResult =
-  | { ok: true; material: Material; coworker?: Coworker }
-  | { ok: false; error: ActionError };
+  { ok: true; material: Material; coworker?: Coworker } | { ok: false; error: ActionError };
 
 export type RegisterResult =
-  | { ok: true; material: Material }
-  | { ok: false; error: 'barcodeRequired' | 'barcodeDuplicate' };
+  { ok: true; material: Material } | { ok: false; error: 'barcodeRequired' | 'barcodeDuplicate' };
+
+export type UserRole = 'admin' | 'user';
+
+export interface AuthUser {
+  email: string;
+  name: string;
+  role: UserRole;
+}
+
+export const ALLOWED_USERS: AuthUser[] = [
+  { email: 'cleber.jaizer@gmail.com', name: 'Cleber Jaizer', role: 'admin' },
+  { email: 'andre.kreitlow@gmail.com', name: 'André Kreitlow', role: 'user' },
+];

@@ -5,16 +5,29 @@
     "materials": "Materials",
     "coworkers": "Co-workers",
     "actions": "Scan",
+    "settings": "Settings",
     "logout": "Log out"
   },
   "login": {
     "subtitle": "Barcode label manager",
     "username": "User name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
     "button": "Log in",
-    "demoNote": "Demo – no password"
+    "demoNote": "Demo – no password",
+    "error": {
+      "unauthorized": "Only authorized users can access the system."
+    }
+  },
+  "role": {
+    "admin": "Admin",
+    "user": "User"
   },
   "common": {
-    "resetDemo": "Reset demo data"
+    "resetDemo": "Reset demo data",
+    "save": "Save",
+    "barcode": "Barcode",
+    "registered": "Registered"
   },
   "status": {
     "available": "Available",
@@ -65,7 +78,7 @@
   },
   "coworkers": {
     "title": "Co-workers",
-    "add": "Add co-worker",
+    "add": "Add",
     "name": "Name",
     "itemsHeld": "Items held"
   },
@@ -95,5 +108,14 @@
       "invalidState": "This item's current status does not allow this action.",
       "coworkerRequired": "Select a co-worker first."
     }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "languageDesc": "Choose the display language for the application.",
+    "account": "Account information",
+    "role": "Access level",
+    "about": "About UniFlow",
+    "version": "Version"
   }
 }

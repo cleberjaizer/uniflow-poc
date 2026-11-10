@@ -9,10 +9,26 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/shell').then((m) => m.Shell),
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
-      { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard) },
-      { path: 'materials', loadComponent: () => import('./pages/materials/materials').then((m) => m.Materials) },
-      { path: 'coworkers', loadComponent: () => import('./pages/coworkers/coworkers').then((m) => m.Coworkers) },
-      { path: 'actions', loadComponent: () => import('./pages/actions/actions').then((m) => m.Actions) },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'materials',
+        loadComponent: () => import('./pages/materials/materials').then((m) => m.Materials),
+      },
+      {
+        path: 'coworkers',
+        loadComponent: () => import('./pages/coworkers/coworkers').then((m) => m.Coworkers),
+      },
+      {
+        path: 'actions',
+        loadComponent: () => import('./pages/actions/actions').then((m) => m.Actions),
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./pages/settings/settings').then((m) => m.Settings),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

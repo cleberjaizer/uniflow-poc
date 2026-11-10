@@ -1,7 +1,21 @@
 import { Injectable, computed, signal } from '@angular/core';
-import { ActionResult, ActionType, Coworker, HistoryEntry, Material, RegisterResult } from './models';
+import {
+  ActionResult,
+  ActionType,
+  Coworker,
+  HistoryEntry,
+  Material,
+  RegisterResult,
+} from './models';
 
 const KEY = 'uniflow.data.v1';
+
+const uid = (prefix: string) => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return `${prefix}_${crypto.randomUUID().slice(0, 8)}`;
+  }
+  return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+};
 
 interface Store {
   coworkers: Coworker[];
@@ -17,7 +31,14 @@ const daysAgo = (d: number, h = 9) => {
 };
 
 function seed(): Store {
-  const names = ['Ana Souza', 'Bruno Lima', 'Carla Mendes', 'Diego Alves', 'Elisa Ramos', 'Felipe Costa'];
+  const names = [
+    'Ana Souza',
+    'Bruno Lima',
+    'Carla Mendes',
+    'Diego Alves',
+    'Elisa Ramos',
+    'Felipe Costa',
+  ];
   const coworkers: Coworker[] = names.map((name, i) => ({
     id: `c${i + 1}`,
     name,
@@ -53,10 +74,18 @@ function seed(): Store {
     m.status = status;
     m.holderId = holderId;
   };
-  add('checkout', 'm1', daysAgo(6), 'c1'); add('checkin', 'm1', daysAgo(5), 'c1'); add('laundry-in', 'm1', daysAgo(5, 15)); add('laundry-out', 'm1', daysAgo(3));
-  add('checkout', 'm3', daysAgo(4), 'c2'); set('m3', 'checked-out', 'c2');
-  add('checkout', 'm4', daysAgo(3), 'c3'); add('checkin', 'm4', daysAgo(2), 'c3'); add('laundry-in', 'm4', daysAgo(2, 14)); set('m4', 'in-laundry');
-  add('checkout', 'm7', daysAgo(1), 'c5'); set('m7', 'checked-out', 'c5');
+  add('checkout', 'm1', daysAgo(6), 'c1');
+  add('checkin', 'm1', daysAgo(5), 'c1');
+  add('laundry-in', 'm1', daysAgo(5, 15));
+  add('laundry-out', 'm1', daysAgo(3));
+  add('checkout', 'm3', daysAgo(4), 'c2');
+  set('m3', 'checked-out', 'c2');
+  add('checkout', 'm4', daysAgo(3), 'c3');
+  add('checkin', 'm4', daysAgo(2), 'c3');
+  add('laundry-in', 'm4', daysAgo(2, 14));
+  set('m4', 'in-laundry');
+  add('checkout', 'm7', daysAgo(1), 'c5');
+  set('m7', 'checked-out', 'c5');
   history.sort((a, b) => a.at.localeCompare(b.at));
   return { coworkers, materials, history };
 }
@@ -68,7 +97,9 @@ export class DataService {
 
   readonly coworkers = computed(() => this.store().coworkers);
   readonly materials = computed(() => this.store().materials);
-  readonly history = computed(() => [...this.store().history].sort((a, b) => b.at.localeCompare(a.at)));
+  readonly history = computed(() =>
+    [...this.store().history].sort((a, b) => b.at.localeCompare(a.at)),
+  );
 
   readonly counts = computed(() => {
     const m = this.materials();
@@ -97,11 +128,12 @@ export class DataService {
 
   /** Label rules are TBD: this is the single place to change how barcodes are generated. */
   private nextBarcode(prefix: string, existing: string[]) {
+    const existingSet = new Set(existing.map((b) => b.trim().toLowerCase()));
     let n = existing.length + 1;
     let code = '';
     do {
       code = `${prefix}-${String(n++).padStart(4, '0')}`;
-    } while (existing.includes(code));
+    } while (existingSet.has(code.toLowerCase()));
     return code;
   }
 
@@ -117,31 +149,44 @@ export class DataService {
     if (this.barcodeInUse(code)) return { ok: false, error: 'barcodeDuplicate' };
     const s = this.store();
     const material: Material = {
-      id: `m${Date.now()}`,
+      id: uid('m'),
       name: name.trim(),
       category: category.trim(),
       barcode: code,
       registeredAt: new Date().toISOString(),
       status: 'available',
     };
-    const entry: HistoryEntry = { id: `h${Date.now()}`, at: material.registeredAt, type: 'registry', materialId: material.id };
+    const entry: HistoryEntry = {
+      id: uid('h'),
+      at: material.registeredAt,
+      type: 'registry',
+      materialId: material.id,
+    };
     this.commit({ ...s, materials: [...s.materials, material], history: [...s.history, entry] });
     return { ok: true, material };
   }
 
   registerCoworker(name: string): Coworker {
     const s = this.store();
+    const allBarcodes = [
+      ...s.coworkers.map((c) => c.barcode),
+      ...s.materials.map((m) => m.barcode),
+    ];
     const coworker: Coworker = {
-      id: `c${Date.now()}`,
+      id: uid('c'),
       name: name.trim(),
-      barcode: this.nextBarcode('EMP', s.coworkers.map((c) => c.barcode)),
+      barcode: this.nextBarcode('EMP', allBarcodes),
       registeredAt: new Date().toISOString(),
     };
     this.commit({ ...s, coworkers: [...s.coworkers, coworker] });
     return coworker;
   }
 
-  perform(type: Exclude<ActionType, 'registry'>, materialBarcode: string, coworkerId?: string): ActionResult {
+  perform(
+    type: Exclude<ActionType, 'registry'>,
+    materialBarcode: string,
+    coworkerId?: string,
+  ): ActionResult {
     const s = this.store();
     const found = this.findMaterial(materialBarcode);
     if (!found) return { ok: false, error: 'notFound' };
@@ -170,7 +215,7 @@ export class DataService {
         break;
     }
     const entry: HistoryEntry = {
-      id: `h${Date.now()}`,
+      id: uid('h'),
       at: new Date().toISOString(),
       type,
       materialId: found.id,

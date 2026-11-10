@@ -17,6 +17,10 @@ export class StatusBadge {
     }[this.status()];
   }
   key() {
-    return { available: 'status.available', 'checked-out': 'status.checkedOut', 'in-laundry': 'status.inLaundry' }[this.status()];
+    return {
+      available: 'status.available',
+      'checked-out': 'status.checkedOut',
+      'in-laundry': 'status.inLaundry',
+    }[this.status()];
   }
 }

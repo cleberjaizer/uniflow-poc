@@ -3,18 +3,31 @@
   "nav": {
     "dashboard": "Painel",
     "materials": "Materiais",
-    "coworkers": "Colegas",
+    "coworkers": "Colaboradores",
     "actions": "Escanear",
+    "settings": "Configurações",
     "logout": "Sair"
   },
   "login": {
     "subtitle": "Gerenciador de etiquetas com código de barras",
     "username": "Nome de usuário",
+    "email": "E-mail",
+    "emailPlaceholder": "Digite seu e-mail",
     "button": "Entrar",
-    "demoNote": "Demo – sem senha"
+    "demoNote": "Demo – sem senha",
+    "error": {
+      "unauthorized": "Apenas usuários autorizados podem acessar o sistema."
+    }
+  },
+  "role": {
+    "admin": "Admin",
+    "user": "Usuário"
   },
   "common": {
-    "resetDemo": "Restaurar dados de demonstração"
+    "resetDemo": "Restaurar dados de demonstração",
+    "save": "Salvar",
+    "barcode": "Código de barras",
+    "registered": "Cadastro"
   },
   "status": {
     "available": "Disponível",
@@ -39,7 +52,7 @@
       "date": "Data",
       "action": "Ação",
       "item": "Item",
-      "coworker": "Colega"
+      "coworker": "Colaborador"
     }
   },
   "materials": {
@@ -64,23 +77,23 @@
     }
   },
   "coworkers": {
-    "title": "Colegas",
-    "add": "Adicionar colega",
+    "title": "Colaboradores",
+    "add": "Adicionar",
     "name": "Nome",
     "itemsHeld": "Itens em posse"
   },
   "actions": {
     "title": "Escanear e registrar",
     "checkout": "Retirada do item",
-    "checkoutDesc": "O colega pega o item",
+    "checkoutDesc": "O colaborador pega o item",
     "checkin": "Devolução do item",
-    "checkinDesc": "O colega devolve o item",
+    "checkinDesc": "O colaborador devolve o item",
     "laundryIn": "Entrada na lavanderia",
     "laundryInDesc": "Item enviado à lavanderia",
     "laundryOut": "Saída da lavanderia",
     "laundryOutDesc": "Item recebido da lavanderia",
-    "coworker": "Colega",
-    "selectCoworker": "Selecione um colega…",
+    "coworker": "Colaborador",
+    "selectCoworker": "Selecione um colaborador…",
     "scan": "Escaneie ou digite o código de barras do item",
     "typeBarcode": "Código (ex.: MAT-0001)",
     "confirm": "Confirmar",
@@ -93,7 +106,16 @@
     "error": {
       "notFound": "Código de barras não encontrado.",
       "invalidState": "O status atual do item não permite esta ação.",
-      "coworkerRequired": "Selecione um colega primeiro."
+      "coworkerRequired": "Selecione um colaborador primeiro."
     }
+  },
+  "settings": {
+    "title": "Configurações",
+    "language": "Idioma",
+    "languageDesc": "Escolha o idioma de exibição do sistema.",
+    "account": "Informações da conta",
+    "role": "Nível de acesso",
+    "about": "Sobre o UniFlow",
+    "version": "Versão"
   }
 }

@@ -1,3 +1,4 @@
 @AGENTS.md
+@ANTIGRAVITY.md
 
-Project instructions live in AGENTS.md (shared by all AI coding agents). Add Gemini-specific notes below this line only.
+Project instructions live in AGENTS.md and ANTIGRAVITY.md. Add Gemini/Antigravity-specific notes below this line only.

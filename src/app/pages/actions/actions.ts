@@ -28,7 +28,11 @@ interface Feedback {
             <button
               type="button"
               class="rounded-lg border p-3 text-left text-sm transition"
-              [class]="type() === a.type ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-600' : 'border-slate-200 hover:bg-slate-50'"
+              [class]="
+                type() === a.type
+                  ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-600'
+                  : 'border-slate-200 hover:bg-slate-50'
+              "
               (click)="select(a.type)"
             >
               <span class="block text-xl" aria-hidden="true">{{ a.icon }}</span>
@@ -41,7 +45,11 @@ interface Feedback {
         @if (type() === 'checkout') {
           <label class="block text-sm font-medium">
             {{ 'actions.coworker' | transloco }}
-            <select class="input mt-1" [ngModel]="coworkerId()" (ngModelChange)="coworkerId.set($event)">
+            <select
+              class="input mt-1"
+              [ngModel]="coworkerId()"
+              (ngModelChange)="coworkerId.set($event)"
+            >
               <option value="">{{ 'actions.selectCoworker' | transloco }}</option>
               @for (c of data.coworkers(); track c.id) {
                 <option [value]="c.id">{{ c.name }} ({{ c.barcode }})</option>
@@ -62,8 +70,12 @@ interface Feedback {
           @if (f.ok) {
             <div class="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
               <p class="font-semibold">✔ {{ 'actions.success' | transloco }}</p>
-              <p class="mt-1">{{ f.item }} <span class="font-mono text-xs">{{ f.barcode }}</span></p>
-              @if (f.coworker) { <p>{{ f.coworker }}</p> }
+              <p class="mt-1">
+                {{ f.item }} <span class="font-mono text-xs">{{ f.barcode }}</span>
+              </p>
+              @if (f.coworker) {
+                <p>{{ f.coworker }}</p>
+              }
             </div>
           } @else {
             <div class="rounded-lg bg-red-50 p-4 text-sm text-red-800">
@@ -99,7 +111,12 @@ export class Actions {
     const res = this.data.perform(this.type(), barcode, this.coworkerId() || undefined);
     this.feedback.set(
       res.ok
-        ? { ok: true, item: res.material.name, barcode: res.material.barcode, coworker: res.coworker?.name }
+        ? {
+            ok: true,
+            item: res.material.name,
+            barcode: res.material.barcode,
+            coworker: res.coworker?.name,
+          }
         : { ok: false, error: res.error },
     );
   }

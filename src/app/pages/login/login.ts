@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
@@ -9,25 +9,48 @@ import { LANGS, LangService } from '../../core/lang.service';
   selector: 'app-login',
   imports: [FormsModule, TranslocoPipe],
   template: `
-    <div class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-white p-4">
-      <form class="card w-full max-w-sm space-y-5 p-6" (ngSubmit)="login()">
+    <div
+      class="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 to-white p-4"
+    >
+      <form class="card w-full max-w-sm space-y-4 p-6" (ngSubmit)="login()">
         <div class="text-center">
           <h1 class="text-3xl font-bold text-brand-600">UniFlow</h1>
           <p class="mt-1 text-sm text-slate-500">{{ 'login.subtitle' | transloco }}</p>
         </div>
 
         <label class="block text-sm font-medium">
-          {{ 'login.username' | transloco }}
-          <input class="input mt-1" name="user" autocomplete="username" autofocus [(ngModel)]="name" required />
+          {{ 'login.email' | transloco }}
+          <input
+            class="input mt-1"
+            type="email"
+            name="email"
+            autocomplete="email"
+            autofocus
+            [placeholder]="'login.emailPlaceholder' | transloco"
+            [ngModel]="email()"
+            (ngModelChange)="setEmail($event)"
+            required
+          />
         </label>
 
-        <button class="btn btn-primary w-full" type="submit" [disabled]="!name.trim()">
+        @if (error()) {
+          <div class="rounded-lg bg-red-50 p-2.5 text-xs text-red-700">
+            {{ 'login.error.unauthorized' | transloco }}
+          </div>
+        }
+
+        <button class="btn btn-primary w-full" type="submit" [disabled]="!email().trim()">
           {{ 'login.button' | transloco }}
         </button>
 
         <div class="flex items-center justify-between text-xs text-slate-400">
           <span>{{ 'login.demoNote' | transloco }}</span>
-          <select class="rounded border border-slate-200 bg-white px-1 py-0.5" [value]="lang.active" (change)="lang.set($any($event.target).value)">
+          <select
+            class="rounded border border-slate-200 bg-white px-1 py-0.5"
+            [value]="lang.active"
+            (change)="lang.set($any($event.target).value)"
+            [attr.aria-label]="'lang.label' | transloco"
+          >
             @for (l of langs; track l.code) {
               <option [value]="l.code">{{ l.label }}</option>
             }
@@ -42,9 +65,20 @@ export class Login {
   private router = inject(Router);
   lang = inject(LangService);
   langs = LANGS;
-  name = '';
+  email = signal('');
+  error = signal(false);
+
+  setEmail(val: string) {
+    this.email.set(val);
+    this.error.set(false);
+  }
 
   login() {
-    if (this.auth.login(this.name)) this.router.navigate(['/dashboard']);
+    this.error.set(false);
+    if (this.auth.login(this.email())) {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.error.set(true);
+    }
   }
 }
