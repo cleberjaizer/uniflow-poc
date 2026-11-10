@@ -97,6 +97,8 @@
     "scan": "Scan or type the item barcode",
     "typeBarcode": "Barcode (e.g. MAT-0001)",
     "confirm": "Confirm",
+    "showOptions": "Options",
+    "hideOptions": "Hide",
     "useCamera": "Use camera",
     "stopCamera": "Stop camera",
     "cameraError": "Could not access the camera. Check permissions or type the code.",

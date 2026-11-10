@@ -97,6 +97,8 @@
     "scan": "Escanee o escriba el código de barras del artículo",
     "typeBarcode": "Código (ej.: MAT-0001)",
     "confirm": "Confirmar",
+    "showOptions": "Opciones",
+    "hideOptions": "Ocultar",
     "useCamera": "Usar cámara",
     "stopCamera": "Detener cámara",
     "cameraError": "No se pudo acceder a la cámara. Revise los permisos o escriba el código.",

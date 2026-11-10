@@ -47,6 +47,8 @@ import { TranslocoPipe } from '@jsverse/transloco';
 })
 export class BarcodeInput implements OnDestroy {
   scanned = output<string>();
+  /** Emits true when camera starts, false when camera stops. */
+  cameraActive = output<boolean>();
   /** Stop the camera after the first successful read (used when registering a single item). */
   autoStop = input(false);
   /** Label of the submit button for the typed code. */
@@ -73,6 +75,7 @@ export class BarcodeInput implements OnDestroy {
       const { BrowserMultiFormatReader } = await import('@zxing/browser');
       const reader = new BrowserMultiFormatReader();
       this.cameraOn.set(true);
+      this.cameraActive.emit(true);
       this.controls = await reader.decodeFromVideoDevice(
         undefined,
         this.video().nativeElement,
@@ -97,6 +100,7 @@ export class BarcodeInput implements OnDestroy {
     this.controls?.stop();
     this.controls = undefined;
     this.cameraOn.set(false);
+    this.cameraActive.emit(false);
   }
 
   ngOnDestroy() {

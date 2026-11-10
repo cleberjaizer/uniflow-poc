@@ -1,9 +1,9 @@
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, signal, viewChild } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActionError, ActionType } from '../../core/models';
 import { DataService } from '../../core/data.service';
 import { BarcodeInput } from '../../shared/barcode-input';
+import { ActionDef, ActionSelector } from './action-selector';
 
 type FlowAction = Exclude<ActionType, 'registry'>;
 
@@ -17,50 +17,24 @@ interface Feedback {
 
 @Component({
   selector: 'app-actions',
-  imports: [FormsModule, TranslocoPipe, BarcodeInput],
+  imports: [TranslocoPipe, BarcodeInput, ActionSelector],
   template: `
     <h1 class="mb-4 text-2xl font-bold">{{ 'actions.title' | transloco }}</h1>
 
     <div class="grid gap-6 lg:grid-cols-2">
       <section class="card space-y-4">
-        <div class="grid grid-cols-2 gap-2">
-          @for (a of actions; track a.type) {
-            <button
-              type="button"
-              class="rounded-lg border p-3 text-left text-sm transition"
-              [class]="
-                type() === a.type
-                  ? 'border-brand-600 bg-brand-50 ring-1 ring-brand-600'
-                  : 'border-slate-200 hover:bg-slate-50'
-              "
-              (click)="select(a.type)"
-            >
-              <span class="block text-xl" aria-hidden="true">{{ a.icon }}</span>
-              <span class="block font-semibold">{{ a.key | transloco }}</span>
-              <span class="block text-xs text-slate-500">{{ a.key + 'Desc' | transloco }}</span>
-            </button>
-          }
-        </div>
-
-        @if (type() === 'checkout') {
-          <label class="block text-sm font-medium">
-            {{ 'actions.coworker' | transloco }}
-            <select
-              class="input mt-1"
-              [ngModel]="coworkerId()"
-              (ngModelChange)="coworkerId.set($event)"
-            >
-              <option value="">{{ 'actions.selectCoworker' | transloco }}</option>
-              @for (c of data.coworkers(); track c.id) {
-                <option [value]="c.id">{{ c.name }} ({{ c.barcode }})</option>
-              }
-            </select>
-          </label>
-        }
+        <!-- Collapsible action selector — auto-collapses when camera is active -->
+        <app-action-selector
+          #selector
+          [actions]="actions"
+          [(type)]="type"
+          [(coworkerId)]="coworkerId"
+          [coworkers]="data.coworkers()"
+        />
 
         <div>
           <p class="mb-2 text-sm font-medium">{{ 'actions.scan' | transloco }}</p>
-          <app-barcode-input (scanned)="run($event)" />
+          <app-barcode-input (scanned)="run($event)" (cameraActive)="onCameraActive($event)" />
         </div>
       </section>
 
@@ -95,16 +69,17 @@ export class Actions {
   coworkerId = signal('');
   feedback = signal<Feedback | null>(null);
 
-  actions: { type: FlowAction; key: string; icon: string }[] = [
+  selector = viewChild.required(ActionSelector);
+
+  actions: ActionDef[] = [
     { type: 'checkout', key: 'actions.checkout', icon: '⬆️' },
     { type: 'checkin', key: 'actions.checkin', icon: '⬇️' },
     { type: 'laundry-in', key: 'actions.laundryIn', icon: '🧺' },
     { type: 'laundry-out', key: 'actions.laundryOut', icon: '✅' },
   ];
 
-  select(t: FlowAction) {
-    this.type.set(t);
-    this.feedback.set(null);
+  onCameraActive(active: boolean) {
+    this.selector().onCameraChanged(active);
   }
 
   run(barcode: string) {
