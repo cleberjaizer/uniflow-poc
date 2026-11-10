@@ -106,7 +106,7 @@
     "noResult": "Aún no se ha escaneado nada.",
     "success": "Acción registrada",
     "error": {
-      "notFound": "Código de barras no encontrado.",
+      "notRegisteredCode": "Código de barras no registrado en la lista de materiales. Registre este artículo antes de usarlo.",
       "invalidState": "El estado actual del artículo no permite esta acción.",
       "coworkerRequired": "Seleccione un compañero primero."
     }

@@ -70,6 +70,7 @@ export class Actions {
   feedback = signal<Feedback | null>(null);
 
   selector = viewChild.required(ActionSelector);
+  scanner = viewChild.required(BarcodeInput);
 
   actions: ActionDef[] = [
     { type: 'checkout', key: 'actions.checkout', icon: '⬆️' },
@@ -94,5 +95,7 @@ export class Actions {
           }
         : { ok: false, error: res.error },
     );
+    // Stop the camera only after a successful action; on errors keep scanning.
+    if (res.ok) this.scanner().stop();
   }
 }

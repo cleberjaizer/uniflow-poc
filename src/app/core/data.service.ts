@@ -189,7 +189,7 @@ export class DataService {
   ): ActionResult {
     const s = this.store();
     const found = this.findMaterial(materialBarcode);
-    if (!found) return { ok: false, error: 'notFound' };
+    if (!found) return { ok: false, error: 'notRegisteredCode' };
 
     let next: Material;
     let coworker: Coworker | undefined;

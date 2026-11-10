@@ -26,7 +26,7 @@ export interface HistoryEntry {
   coworkerId?: string;
 }
 
-export type ActionError = 'notFound' | 'invalidState' | 'coworkerRequired';
+export type ActionError = 'notRegisteredCode' | 'invalidState' | 'coworkerRequired';
 export type ActionResult =
   { ok: true; material: Material; coworker?: Coworker } | { ok: false; error: ActionError };
 

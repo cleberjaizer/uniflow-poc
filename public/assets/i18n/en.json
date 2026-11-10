@@ -106,7 +106,7 @@
     "noResult": "Nothing scanned yet.",
     "success": "Action registered",
     "error": {
-      "notFound": "Barcode not found.",
+      "notRegisteredCode": "Barcode not registered in the materials list. Register this item before use.",
       "invalidState": "This item's current status does not allow this action.",
       "coworkerRequired": "Select a co-worker first."
     }
