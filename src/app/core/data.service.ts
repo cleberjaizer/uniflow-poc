@@ -7,6 +7,9 @@ import {
   Material,
   RegisterResult,
 } from './models';
+import coworkersMock from '../mocks/coworkers.json';
+
+const COWORKERS_MOCK: Coworker[] = coworkersMock;
 
 const KEY = 'uniflow.data.v1';
 
@@ -31,20 +34,7 @@ const daysAgo = (d: number, h = 9) => {
 };
 
 function seed(): Store {
-  const names = [
-    'Ana Souza',
-    'Bruno Lima',
-    'Carla Mendes',
-    'Diego Alves',
-    'Elisa Ramos',
-    'Felipe Costa',
-  ];
-  const coworkers: Coworker[] = names.map((name, i) => ({
-    id: `c${i + 1}`,
-    name,
-    barcode: `EMP-${String(i + 1).padStart(4, '0')}`,
-    registeredAt: daysAgo(30 - i),
-  }));
+  const coworkers: Coworker[] = structuredClone(COWORKERS_MOCK);
   const items: [string, string][] = [
     ['Lab coat', 'Uniform'],
     ['Lab coat', 'Uniform'],
@@ -243,7 +233,13 @@ export class DataService {
   private load(): Store {
     try {
       const raw = localStorage.getItem(KEY);
-      if (raw) return JSON.parse(raw) as Store;
+      if (raw) {
+        const saved = JSON.parse(raw) as Store;
+        // Co-workers always come from the mock file; co-workers registered in the app are kept.
+        const mockIds = new Set(COWORKERS_MOCK.map((c) => c.id));
+        const extra = saved.coworkers.filter((c) => !mockIds.has(c.id));
+        return { ...saved, coworkers: [...structuredClone(COWORKERS_MOCK), ...extra] };
+      }
     } catch {}
     return seed();
   }

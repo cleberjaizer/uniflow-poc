@@ -1,0 +1,38 @@
+[
+  {
+    "id": "c1",
+    "name": "Ana Souza",
+    "barcode": "EMP-0001",
+    "registeredAt": "2026-10-11T12:00:00.000Z"
+  },
+  {
+    "id": "c2",
+    "name": "Bruno Lima",
+    "barcode": "EMP-0002",
+    "registeredAt": "2026-09-12T12:00:00.000Z"
+  },
+  {
+    "id": "c3",
+    "name": "Carla Mendes",
+    "barcode": "EMP-0003",
+    "registeredAt": "2026-09-13T12:00:00.000Z"
+  },
+  {
+    "id": "c4",
+    "name": "Diego Alves",
+    "barcode": "EMP-0004",
+    "registeredAt": "2026-02-14T12:00:00.000Z"
+  },
+  {
+    "id": "c5",
+    "name": "Elisa Ramos",
+    "barcode": "EMP-0005",
+    "registeredAt": "2026-05-15T12:00:00.000Z"
+  },
+  {
+    "id": "c6",
+    "name": "Felipe Costa",
+    "barcode": "EMP-0006",
+    "registeredAt": "2025-10-16T12:00:00.000Z"
+  }
+]

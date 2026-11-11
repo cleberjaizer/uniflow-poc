@@ -1,3 +1,5 @@
+import usersMock from '../mocks/users.json';
+
 export type ItemStatus = 'available' | 'checked-out' | 'in-laundry';
 export type ActionType = 'registry' | 'checkout' | 'checkin' | 'laundry-in' | 'laundry-out';
 
@@ -41,7 +43,5 @@ export interface AuthUser {
   role: UserRole;
 }
 
-export const ALLOWED_USERS: AuthUser[] = [
-  { email: 'cleber.jaizer@gmail.com', name: 'Cleber Jaizer', role: 'admin' },
-  { email: 'andre.kreitlow@gmail.com', name: 'André Kreitlow', role: 'user' },
-];
+/** Allowed users are read from the mock file `src/app/mocks/users.json`. */
+export const ALLOWED_USERS: AuthUser[] = usersMock as AuthUser[];
