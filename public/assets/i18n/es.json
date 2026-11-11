@@ -57,7 +57,7 @@
   },
   "materials": {
     "title": "Materiales",
-    "add": "Agregar material",
+    "add": "Agregar",
     "name": "Nombre",
     "category": "Categoría",
     "barcode": "Código de barras",

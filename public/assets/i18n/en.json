@@ -57,7 +57,7 @@
   },
   "materials": {
     "title": "Materials",
-    "add": "Add material",
+    "add": "Add",
     "name": "Name",
     "category": "Category",
     "barcode": "Barcode",
