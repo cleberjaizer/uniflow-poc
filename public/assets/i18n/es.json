@@ -118,6 +118,7 @@
     "account": "Información de la cuenta",
     "role": "Nivel de acceso",
     "about": "Acerca de UniFlow",
+    "reset": "Restablecer valores predeterminados",
     "version": "Versión"
   }
 }

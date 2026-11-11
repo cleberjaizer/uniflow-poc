@@ -66,10 +66,13 @@ import { LANGS, LangService } from '../../core/lang.service';
 
       <!-- Demo data card (admin only) -->
       @if (auth.isAdmin()) {
-        <section class="card flex items-center justify-between gap-4">
-          <button type="button" class="btn btn-secondary" (click)="data.resetDemo()">
-            {{ 'common.resetDemo' | transloco }}
-          </button>
+        <section class="card space-y-4">
+          <h2 class="text-lg font-semibold">{{ 'settings.reset' | transloco }}</h2>
+          <div>
+            <button type="button" class="btn btn-secondary" (click)="data.resetDemo()">
+              {{ 'common.resetDemo' | transloco }}
+            </button>
+          </div>
         </section>
       }
 
