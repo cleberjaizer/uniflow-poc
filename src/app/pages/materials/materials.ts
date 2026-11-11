@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
@@ -24,35 +24,58 @@ import { StatusBadge } from '../../shared/status-badge';
       <section class="card mb-4 space-y-4">
         <h2 class="text-lg font-semibold">{{ 'materials.addTitle' | transloco }}</h2>
 
-        <div class="grid gap-3 sm:grid-cols-2">
-          <label class="block text-sm font-medium">
-            {{ 'materials.name' | transloco }}
-            <input
-              class="input mt-1"
-              name="name"
-              autocomplete="off"
-              [ngModel]="name()"
-              (ngModelChange)="name.set($event)"
-            />
-          </label>
-          <label class="block text-sm font-medium">
-            {{ 'materials.category' | transloco }}
-            <input
-              class="input mt-1"
-              name="cat"
-              autocomplete="off"
-              [ngModel]="category()"
-              (ngModelChange)="category.set($event)"
-            />
-          </label>
+        <!-- Collapsible name/category section: collapses while the camera is on -->
+        <div class="flex items-center justify-between gap-2">
+          @if (!detailsOpen() && (name().trim() || category().trim())) {
+            <span class="truncate text-sm font-semibold">
+              {{ name().trim() }}
+              @if (category().trim()) {
+                <span class="font-normal text-slate-500">· {{ category().trim() }}</span>
+              }
+            </span>
+          }
+          <button
+            type="button"
+            class="btn btn-secondary ml-auto px-2 py-1 text-xs"
+            (click)="detailsOpen.set(!detailsOpen())"
+            [attr.aria-expanded]="detailsOpen()"
+          >
+            {{ (detailsOpen() ? 'actions.hideOptions' : 'actions.showOptions') | transloco }}
+            <span aria-hidden="true" class="ml-1">{{ detailsOpen() ? '▲' : '▼' }}</span>
+          </button>
         </div>
+
+        @if (detailsOpen()) {
+          <div class="grid gap-3 sm:grid-cols-2">
+            <label class="block text-sm font-medium">
+              {{ 'materials.name' | transloco }}
+              <input
+                class="input mt-1"
+                name="name"
+                autocomplete="off"
+                [ngModel]="name()"
+                (ngModelChange)="name.set($event)"
+              />
+            </label>
+            <label class="block text-sm font-medium">
+              {{ 'materials.category' | transloco }}
+              <input
+                class="input mt-1"
+                name="cat"
+                autocomplete="off"
+                [ngModel]="category()"
+                (ngModelChange)="category.set($event)"
+              />
+            </label>
+          </div>
+        }
 
         <div>
           <p class="mb-2 text-sm font-medium">{{ 'materials.scanBarcode' | transloco }}</p>
           <app-barcode-input
-            [autoStop]="true"
             submitKey="materials.useCode"
             (scanned)="setBarcode($event)"
+            (cameraActive)="detailsOpen.set(!$event)"
           />
         </div>
 
@@ -122,7 +145,10 @@ import { StatusBadge } from '../../shared/status-badge';
 export class Materials {
   auth = inject(AuthService);
   private data = inject(DataService);
+  scanner = viewChild(BarcodeInput);
   adding = signal(false);
+  /** Name/category section; auto-collapses while the camera is on. */
+  detailsOpen = signal(true);
   search = signal('');
   name = signal('');
   category = signal('');
@@ -152,6 +178,8 @@ export class Materials {
   setBarcode(code: string) {
     this.barcode.set(code.trim());
     this.saved.set('');
+    // Stop the camera only when the barcode is usable; on a duplicate keep scanning.
+    if (this.barcode() && !this.duplicate()) this.scanner()?.stop();
   }
 
   save() {
