@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActionType } from '../../core/models';
 import { DataService } from '../../core/data.service';
-import { AuthService } from '../../core/auth.service';
 
 const KEYS: Record<ActionType, string> = {
   registry: 'history.registry',
@@ -81,19 +80,10 @@ const KEYS: Record<ActionType, string> = {
       } @empty {
         <p class="py-6 text-center text-sm text-slate-400">{{ 'dashboard.empty' | transloco }}</p>
       }
-
-      @if (auth.isAdmin()) {
-        <div class="mt-4 text-right">
-          <button class="btn btn-secondary" (click)="data.resetDemo()">
-            {{ 'common.resetDemo' | transloco }}
-          </button>
-        </div>
-      }
     </section>
   `,
 })
 export class Dashboard {
-  auth = inject(AuthService);
   data = inject(DataService);
   keys = KEYS;
   types: ActionType[] = ['registry', 'checkout', 'checkin', 'laundry-in', 'laundry-out'];

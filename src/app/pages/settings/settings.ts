@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
+import { DataService } from '../../core/data.service';
 import { LANGS, LangService } from '../../core/lang.service';
 
 @Component({
@@ -63,6 +64,15 @@ import { LANGS, LangService } from '../../core/lang.service';
         </section>
       }
 
+      <!-- Demo data card (admin only) -->
+      @if (auth.isAdmin()) {
+        <section class="card flex items-center justify-between gap-4">
+          <button type="button" class="btn btn-secondary" (click)="data.resetDemo()">
+            {{ 'common.resetDemo' | transloco }}
+          </button>
+        </section>
+      }
+
       <!-- About card -->
       <section class="card space-y-2 text-sm text-slate-500">
         <h2 class="text-base font-semibold text-slate-800">{{ 'settings.about' | transloco }}</h2>
@@ -73,6 +83,7 @@ import { LANGS, LangService } from '../../core/lang.service';
 })
 export class Settings {
   auth = inject(AuthService);
+  data = inject(DataService);
   lang = inject(LangService);
   langs = LANGS;
 }
