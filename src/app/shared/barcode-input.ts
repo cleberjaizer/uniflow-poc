@@ -1,6 +1,16 @@
-import { Component, ElementRef, OnDestroy, input, output, signal, viewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  inject,
+  input,
+  output,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { CameraService } from '../core/camera.service';
 
 /**
  * Barcode entry: a text box (works with USB/Bluetooth scanners, which type the digits and press Enter,
@@ -46,6 +56,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
   `,
 })
 export class BarcodeInput implements OnDestroy {
+  private camera = inject(CameraService);
   scanned = output<string>();
   /** Emits true when camera starts, false when camera stops. */
   cameraActive = output<boolean>();
@@ -76,8 +87,9 @@ export class BarcodeInput implements OnDestroy {
       const reader = new BrowserMultiFormatReader();
       this.cameraOn.set(true);
       this.cameraActive.emit(true);
+      const selectedDeviceId = this.camera.selectedId() || undefined;
       this.controls = await reader.decodeFromVideoDevice(
-        undefined,
+        selectedDeviceId,
         this.video().nativeElement,
         (result) => {
           if (!result) return;
@@ -90,6 +102,7 @@ export class BarcodeInput implements OnDestroy {
           if (this.autoStop()) this.stop();
         },
       );
+      void this.camera.refreshDevices();
     } catch {
       this.cameraOn.set(false);
       this.cameraError.set(true);

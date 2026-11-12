@@ -1,8 +1,10 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, ElementRef, OnDestroy, computed, inject, signal, viewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
+import { CameraService } from '../../core/camera.service';
 import { DataService } from '../../core/data.service';
 import { LANGS, LangService } from '../../core/lang.service';
 
@@ -65,6 +67,60 @@ import { LANGS, LangService } from '../../core/lang.service';
         </section>
       }
 
+      <!-- Camera settings card -->
+      <section class="card space-y-4">
+        <div>
+          <h2 class="text-lg font-semibold">{{ 'settings.camera' | transloco }}</h2>
+          <p class="text-sm text-slate-500">{{ 'settings.cameraDesc' | transloco }}</p>
+        </div>
+
+        <div class="space-y-2 text-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+            <span class="text-slate-500">{{ 'settings.cameraCurrent' | transloco }}</span>
+            <span class="font-medium text-slate-900">{{ currentCameraLabel() }}</span>
+          </div>
+        </div>
+
+        <label class="block text-sm font-medium">
+          {{ 'settings.cameraSelect' | transloco }}
+          <select
+            class="input mt-1"
+            [ngModel]="camera.selectedId()"
+            (ngModelChange)="onCameraChange($event)"
+            (focus)="ensureDevices()"
+          >
+            <option value="">{{ 'settings.cameraDefault' | transloco }}</option>
+            @for (d of camera.devices(); track d.deviceId; let i = $index) {
+              <option [value]="d.deviceId">
+                {{ d.label || ('settings.cameraDevice' | transloco) + ' ' + (i + 1) }}
+              </option>
+            }
+          </select>
+        </label>
+
+        <div>
+          <button
+            type="button"
+            class="btn btn-secondary w-full sm:w-auto"
+            (click)="previewOn() ? stopPreview() : startPreview()"
+          >
+            📷 {{ (previewOn() ? 'settings.stopPreview' : 'settings.previewCamera') | transloco }}
+          </button>
+        </div>
+
+        @if (previewError()) {
+          <p class="text-sm text-red-600">{{ 'actions.cameraError' | transloco }}</p>
+        }
+
+        <video
+          #previewVideo
+          class="aspect-video w-full max-w-md rounded-xl bg-black object-cover"
+          [class.hidden]="!previewOn()"
+          playsinline
+          muted
+        ></video>
+      </section>
+
       <!-- Demo data card (admin only) -->
       @if (auth.isAdmin()) {
         <section class="card space-y-4">
@@ -99,18 +155,94 @@ import { LANGS, LangService } from '../../core/lang.service';
     </div>
   `,
 })
-export class Settings {
+export class Settings implements OnDestroy {
   auth = inject(AuthService);
+  camera = inject(CameraService);
   data = inject(DataService);
   lang = inject(LangService);
   private router = inject(Router);
+  private transloco = inject(TranslocoService);
+  private activeLang = toSignal(this.transloco.langChanges$);
+  private previewVideo = viewChild.required<ElementRef<HTMLVideoElement>>('previewVideo');
+  private stream?: MediaStream;
+
   langs = LANGS;
   confirmingReset = signal(false);
+  previewOn = signal(false);
+  previewError = signal(false);
+
+  currentCameraLabel = computed(() => {
+    this.activeLang();
+    const id = this.camera.selectedId();
+    if (!id) return this.transloco.translate('settings.cameraDefault');
+    const idx = this.camera.devices().findIndex((d) => d.deviceId === id);
+    if (idx === -1) return this.transloco.translate('settings.cameraDefault');
+    const dev = this.camera.devices()[idx];
+    return dev.label || `${this.transloco.translate('settings.cameraDevice')} ${idx + 1}`;
+  });
+
+  constructor() {
+    void this.camera.refreshDevices();
+  }
+
+  async ensureDevices() {
+    const list = this.camera.devices();
+    if (list.length === 0 || list.every((d) => !d.label)) {
+      await this.camera.refreshDevices(true);
+    }
+  }
+
+  onCameraChange(deviceId: string) {
+    this.camera.select(deviceId);
+    if (this.previewOn()) {
+      void this.startPreview();
+    }
+  }
+
+  async startPreview() {
+    this.stopStream();
+    this.previewError.set(false);
+    try {
+      const deviceId = this.camera.selectedId();
+      const constraints: MediaStreamConstraints = {
+        video: deviceId ? { deviceId: { exact: deviceId } } : true,
+        audio: false,
+      };
+      this.stream = await navigator.mediaDevices.getUserMedia(constraints);
+      await this.camera.refreshDevices();
+      const videoEl = this.previewVideo().nativeElement;
+      videoEl.srcObject = this.stream;
+      this.previewOn.set(true);
+      await videoEl.play();
+    } catch {
+      this.stopPreview();
+      this.previewError.set(true);
+    }
+  }
+
+  stopPreview() {
+    this.stopStream();
+    const videoEl = this.previewVideo()?.nativeElement;
+    if (videoEl) {
+      videoEl.srcObject = null;
+    }
+    this.previewOn.set(false);
+  }
+
+  private stopStream() {
+    this.stream?.getTracks().forEach((t) => t.stop());
+    this.stream = undefined;
+  }
 
   confirmReset() {
+    this.stopPreview();
     this.data.resetDemo();
     this.confirmingReset.set(false);
     this.auth.logout();
     this.router.navigate(['/login']);
+  }
+
+  ngOnDestroy() {
+    this.stopPreview();
   }
 }
