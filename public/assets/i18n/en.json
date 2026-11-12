@@ -59,6 +59,8 @@
     "history": "Movement history",
     "search": "Search…",
     "filterAll": "All actions",
+    "filterAllTypes": "All types",
+    "showHistory": "Show movement history",
     "empty": "No records found.",
     "col": {
       "date": "Date",

@@ -59,6 +59,8 @@
     "history": "Historial de movimientos",
     "search": "Buscar…",
     "filterAll": "Todas las acciones",
+    "filterAllTypes": "Todos los tipos",
+    "showHistory": "Ver historial de movimientos",
     "empty": "No se encontraron registros.",
     "col": {
       "date": "Fecha",
