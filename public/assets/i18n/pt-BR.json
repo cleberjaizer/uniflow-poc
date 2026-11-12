@@ -132,6 +132,7 @@
     "role": "Nível de acesso",
     "about": "Sobre o UniFlow",
     "reset": "Restaurar padrão",
+    "resetConfirm": "Tem certeza de que deseja restaurar os dados de demonstração? Esta ação não pode ser desfeita.",
     "version": "Versão"
   }
 }

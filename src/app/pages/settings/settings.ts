@@ -1,5 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
 import { DataService } from '../../core/data.service';
@@ -68,11 +69,25 @@ import { LANGS, LangService } from '../../core/lang.service';
       @if (auth.isAdmin()) {
         <section class="card space-y-4">
           <h2 class="text-lg font-semibold">{{ 'settings.reset' | transloco }}</h2>
-          <div>
-            <button type="button" class="btn btn-secondary" (click)="data.resetDemo()">
-              {{ 'common.resetDemo' | transloco }}
-            </button>
-          </div>
+          @if (!confirmingReset()) {
+            <div>
+              <button type="button" class="btn btn-primary" (click)="confirmingReset.set(true)">
+                {{ 'common.resetDemo' | transloco }}
+              </button>
+            </div>
+          } @else {
+            <div class="space-y-3 rounded-lg border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+              <p class="font-medium">{{ 'settings.resetConfirm' | transloco }}</p>
+              <div class="flex gap-2">
+                <button type="button" class="btn btn-primary" (click)="confirmReset()">
+                  {{ 'actions.confirm' | transloco }}
+                </button>
+                <button type="button" class="btn btn-secondary" (click)="confirmingReset.set(false)">
+                  {{ 'materials.cancel' | transloco }}
+                </button>
+              </div>
+            </div>
+          }
         </section>
       }
 
@@ -88,5 +103,14 @@ export class Settings {
   auth = inject(AuthService);
   data = inject(DataService);
   lang = inject(LangService);
+  private router = inject(Router);
   langs = LANGS;
+  confirmingReset = signal(false);
+
+  confirmReset() {
+    this.data.resetDemo();
+    this.confirmingReset.set(false);
+    this.auth.logout();
+    this.router.navigate(['/login']);
+  }
 }

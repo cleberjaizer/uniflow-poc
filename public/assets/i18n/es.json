@@ -132,6 +132,7 @@
     "role": "Nivel de acceso",
     "about": "Acerca de UniFlow",
     "reset": "Restablecer valores predeterminados",
+    "resetConfirm": "¿Está seguro de que desea restablecer los datos de demostración? Esta acción no se puede deshacer.",
     "version": "Versión"
   }
 }

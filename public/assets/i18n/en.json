@@ -132,6 +132,7 @@
     "role": "Access level",
     "about": "About UniFlow",
     "reset": "Reset default",
+    "resetConfirm": "Are you sure you want to reset the demo data? This action cannot be undone.",
     "version": "Version"
   }
 }
