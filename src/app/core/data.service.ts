@@ -5,13 +5,17 @@ import {
   Coworker,
   HistoryEntry,
   Material,
+  MaterialType,
   RegisterResult,
 } from './models';
 import coworkersMock from '../mocks/coworkers.json';
+import materialsMock from '../mocks/materials.json';
 
 const COWORKERS_MOCK: Coworker[] = coworkersMock;
+const MATERIALS_MOCK = materialsMock as Material[];
 
-const KEY = 'uniflow.data.v1';
+// v2: materials are now classified by `type` (MaterialType) instead of a free-text category.
+const KEY = 'uniflow.data.v3';
 
 const uid = (prefix: string) => {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -35,24 +39,7 @@ const daysAgo = (d: number, h = 9) => {
 
 function seed(): Store {
   const coworkers: Coworker[] = structuredClone(COWORKERS_MOCK);
-  const items: [string, string][] = [
-    ['Lab coat', 'Uniform'],
-    ['Lab coat', 'Uniform'],
-    ['Safety vest', 'Uniform'],
-    ['Bath towel', 'Linen'],
-    ['Bath towel', 'Linen'],
-    ['Hand towel', 'Linen'],
-    ['Work apron', 'Uniform'],
-    ['Cleaning cloth', 'Linen'],
-  ];
-  const materials: Material[] = items.map(([name, category], i) => ({
-    id: `m${i + 1}`,
-    name,
-    category,
-    barcode: `MAT-${String(i + 1).padStart(4, '0')}`,
-    registeredAt: daysAgo(20 - i),
-    status: 'available',
-  }));
+  const materials: Material[] = structuredClone(MATERIALS_MOCK);
   const history: HistoryEntry[] = [];
   let n = 1;
   const add = (type: ActionType, materialId: string, at: string, coworkerId?: string) =>
@@ -64,18 +51,18 @@ function seed(): Store {
     m.status = status;
     m.holderId = holderId;
   };
-  add('checkout', 'm1', daysAgo(6), 'c1');
-  add('checkin', 'm1', daysAgo(5), 'c1');
-  add('laundry-in', 'm1', daysAgo(5, 15));
-  add('laundry-out', 'm1', daysAgo(3));
-  add('checkout', 'm3', daysAgo(4), 'c2');
-  set('m3', 'checked-out', 'c2');
-  add('checkout', 'm4', daysAgo(3), 'c3');
-  add('checkin', 'm4', daysAgo(2), 'c3');
-  add('laundry-in', 'm4', daysAgo(2, 14));
-  set('m4', 'in-laundry');
-  add('checkout', 'm7', daysAgo(1), 'c5');
-  set('m7', 'checked-out', 'c5');
+  add('checkout', 'MAT-0001', daysAgo(6), 'c1');
+  add('checkin', 'MAT-0001', daysAgo(5), 'c1');
+  add('laundry-in', 'MAT-0001', daysAgo(5, 15));
+  add('laundry-out', 'MAT-0001', daysAgo(3));
+  add('checkout', 'MAT-0003', daysAgo(4), 'c2');
+  set('MAT-0003', 'checked-out', 'c2');
+  add('checkout', 'MAT-0004', daysAgo(3), 'c3');
+  add('checkin', 'MAT-0004', daysAgo(2), 'c3');
+  add('laundry-in', 'MAT-0004', daysAgo(2, 14));
+  set('MAT-0004', 'in-laundry');
+  add('checkout', 'MAT-0007', daysAgo(1), 'c5');
+  set('MAT-0007', 'checked-out', 'c5');
   history.sort((a, b) => a.at.localeCompare(b.at));
   return { coworkers, materials, history };
 }
@@ -133,15 +120,15 @@ export class DataService {
   }
 
   /** Registers a new item. The barcode is scanned or typed by the user and must be unique. */
-  registerMaterial(name: string, category: string, barcode: string): RegisterResult {
+  registerMaterial(type: MaterialType, name: string, barcode: string): RegisterResult {
     const code = barcode.trim();
     if (!code) return { ok: false, error: 'barcodeRequired' };
     if (this.barcodeInUse(code)) return { ok: false, error: 'barcodeDuplicate' };
     const s = this.store();
     const material: Material = {
       id: uid('m'),
+      type,
       name: name.trim(),
-      category: category.trim(),
       barcode: code,
       registeredAt: new Date().toISOString(),
       status: 'available',

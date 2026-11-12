@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DataService } from './data.service';
+import { MaterialType } from './models';
 
 describe('DataService', () => {
   let service: DataService;
@@ -25,9 +26,10 @@ describe('DataService', () => {
   });
 
   it('should register a new material with unique barcode', () => {
-    const res = service.registerMaterial('Safety Helmet', 'PPE', 'MAT-9999');
+    const res = service.registerMaterial(MaterialType.HARD_HAT, 'Safety Helmet', 'MAT-9999');
     expect(res.ok).toBe(true);
     if (res.ok) {
+      expect(res.material.type).toBe(MaterialType.HARD_HAT);
       expect(res.material.name).toBe('Safety Helmet');
       expect(res.material.barcode).toBe('MAT-9999');
       expect(res.material.status).toBe('available');
@@ -36,14 +38,18 @@ describe('DataService', () => {
   });
 
   it('should reject material registration with duplicate or empty barcode', () => {
-    const emptyRes = service.registerMaterial('Item', 'Cat', '   ');
+    const emptyRes = service.registerMaterial(MaterialType.LAB_COAT, 'Item', '   ');
     expect(emptyRes.ok).toBe(false);
     if (!emptyRes.ok) {
       expect(emptyRes.error).toBe('barcodeRequired');
     }
 
     const first = service.materials()[0];
-    const dupRes = service.registerMaterial('Duplicate Item', 'Cat', first.barcode.toLowerCase());
+    const dupRes = service.registerMaterial(
+      MaterialType.LAB_COAT,
+      'Duplicate Item',
+      first.barcode.toLowerCase(),
+    );
     expect(dupRes.ok).toBe(false);
     if (!dupRes.ok) {
       expect(dupRes.error).toBe('barcodeDuplicate');

@@ -73,7 +73,8 @@ const KEYS: Record<ActionType, string> = {
           <span class="text-slate-500 md:col-span-3">{{ r.at | date: 'short' }}</span>
           <span class="font-medium md:col-span-2">{{ keys[r.type] | transloco }}</span>
           <span class="md:col-span-4"
-            >{{ r.item }} <span class="text-xs text-slate-400">{{ r.barcode }}</span></span
+            >{{ r.item ? ('materialType.' + r.item | transloco) : '?' }}
+            <span class="text-xs text-slate-400">{{ r.barcode }}</span></span
           >
           <span class="text-slate-600 md:col-span-3">{{ r.coworker }}</span>
         </div>
@@ -100,7 +101,7 @@ export class Dashboard {
           id: h.id,
           at: h.at,
           type: h.type,
-          item: m?.name ?? '?',
+          item: m?.type,
           barcode: m?.barcode ?? '',
           coworker: this.data.coworkerById(h.coworkerId)?.name ?? '',
         };

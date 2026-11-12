@@ -41,6 +41,18 @@
     "laundryIn": "Enviado à lavanderia",
     "laundryOut": "Voltou da lavanderia"
   },
+  "materialType": {
+    "LAB_COAT": "Jaleco",
+    "SAFETY_VEST": "Colete de segurança",
+    "WORK_APRON": "Avental de trabalho",
+    "COLD_JACKET": "Jaqueta térmica",
+    "HARD_HAT": "Capacete de segurança",
+    "SAFETY_GLASSES": "Óculos de proteção",
+    "STEEL_TOE_BOOTS": "Botas de segurança",
+    "BATH_TOWEL": "Toalha de banho",
+    "HAND_TOWEL": "Toalha de rosto",
+    "CLEANING_CLOTH": "Pano de limpeza"
+  },
   "dashboard": {
     "title": "Painel",
     "total": "Total de itens",
@@ -59,7 +71,8 @@
     "title": "Materiais",
     "add": "Adicionar",
     "name": "Nome",
-    "category": "Categoria",
+    "type": "Tipo",
+    "selectType": "Selecione um tipo…",
     "barcode": "Código de barras",
     "registered": "Cadastro",
     "status": "Status",
@@ -95,7 +108,7 @@
     "coworker": "Colaborador",
     "selectCoworker": "Selecione um colaborador…",
     "scan": "Escaneie ou digite o código de barras do item",
-    "typeBarcode": "Código (ex.: 783006515091)",
+    "typeBarcode": "Código (ex.: 7890000000017)",
     "confirm": "Confirmar",
     "showOptions": "Opções",
     "hideOptions": "Ocultar",

@@ -1,9 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { TranslocoPipe } from '@jsverse/transloco';
+import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
 import { DataService } from '../../core/data.service';
+import { MaterialType } from '../../core/models';
 import { BarcodeInput } from '../../shared/barcode-input';
 import { StatusBadge } from '../../shared/status-badge';
 
@@ -24,13 +26,15 @@ import { StatusBadge } from '../../shared/status-badge';
       <section class="card mb-4 space-y-4">
         <h2 class="text-lg font-semibold">{{ 'materials.addTitle' | transloco }}</h2>
 
-        <!-- Collapsible name/category section: collapses while the camera is on -->
+        <!-- Collapsible type/name section: collapses while the camera is on -->
         <div class="flex items-center justify-between gap-2">
-          @if (!detailsOpen() && (name().trim() || category().trim())) {
+          @if (!detailsOpen() && (type() || name().trim())) {
             <span class="truncate text-sm font-semibold">
-              {{ name().trim() }}
-              @if (category().trim()) {
-                <span class="font-normal text-slate-500">· {{ category().trim() }}</span>
+              @if (type()) {
+                {{ 'materialType.' + type() | transloco }}
+              }
+              @if (name().trim()) {
+                <span class="font-normal text-slate-500">· {{ name().trim() }}</span>
               }
             </span>
           }
@@ -48,6 +52,15 @@ import { StatusBadge } from '../../shared/status-badge';
         @if (detailsOpen()) {
           <div class="grid gap-3 sm:grid-cols-2">
             <label class="block text-sm font-medium">
+              {{ 'materials.type' | transloco }}
+              <select class="input mt-1" [ngModel]="type()" (ngModelChange)="type.set($event)">
+                <option value="">{{ 'materials.selectType' | transloco }}</option>
+                @for (t of types; track t) {
+                  <option [value]="t">{{ 'materialType.' + t | transloco }}</option>
+                }
+              </select>
+            </label>
+            <label class="block text-sm font-medium">
               {{ 'materials.name' | transloco }}
               <input
                 class="input mt-1"
@@ -55,16 +68,6 @@ import { StatusBadge } from '../../shared/status-badge';
                 autocomplete="off"
                 [ngModel]="name()"
                 (ngModelChange)="name.set($event)"
-              />
-            </label>
-            <label class="block text-sm font-medium">
-              {{ 'materials.category' | transloco }}
-              <input
-                class="input mt-1"
-                name="cat"
-                autocomplete="off"
-                [ngModel]="category()"
-                (ngModelChange)="category.set($event)"
               />
             </label>
           </div>
@@ -116,7 +119,7 @@ import { StatusBadge } from '../../shared/status-badge';
       <div
         class="hidden grid-cols-12 gap-2 border-b border-slate-200 pb-2 text-xs font-medium uppercase text-slate-500 md:grid"
       >
-        <span class="col-span-3">{{ 'materials.name' | transloco }}</span>
+        <span class="col-span-3">{{ 'materials.type' | transloco }}</span>
         <span class="col-span-2">{{ 'materials.barcode' | transloco }}</span>
         <span class="col-span-2">{{ 'materials.registered' | transloco }}</span>
         <span class="col-span-2">{{ 'materials.status' | transloco }}</span>
@@ -127,8 +130,11 @@ import { StatusBadge } from '../../shared/status-badge';
           class="grid grid-cols-1 gap-1 border-b border-slate-100 py-2 text-sm md:grid-cols-12 md:items-center md:gap-2"
         >
           <span class="font-medium md:col-span-3"
-            >{{ m.name }} <span class="text-xs text-slate-400">{{ m.category }}</span></span
-          >
+            >{{ 'materialType.' + m.type | transloco }}
+            @if (m.name) {
+              <span class="text-xs text-slate-400">{{ m.name }}</span>
+            }
+          </span>
           <span class="font-mono text-xs md:col-span-2">{{ m.barcode }}</span>
           <span class="text-slate-500 md:col-span-2">{{
             m.registeredAt | date: 'mediumDate'
@@ -145,29 +151,35 @@ import { StatusBadge } from '../../shared/status-badge';
 export class Materials {
   auth = inject(AuthService);
   private data = inject(DataService);
+  private transloco = inject(TranslocoService);
+  private lang = toSignal(this.transloco.langChanges$);
   scanner = viewChild(BarcodeInput);
   adding = signal(false);
-  /** Name/category section; auto-collapses while the camera is on. */
+  /** Type/name section; auto-collapses while the camera is on. */
   detailsOpen = signal(true);
+  types = Object.values(MaterialType);
   search = signal('');
+  type = signal<MaterialType | ''>('');
   name = signal('');
-  category = signal('');
   barcode = signal('');
   saved = signal('');
 
   duplicate = computed(() => !!this.barcode() && this.data.barcodeInUse(this.barcode()));
+  // Type and barcode are required; the name is just an optional detail.
   canSave = computed(
-    () => this.auth.isAdmin() && !!this.name().trim() && !!this.barcode() && !this.duplicate(),
+    () => this.auth.isAdmin() && !!this.type() && !!this.barcode() && !this.duplicate(),
   );
 
   rows = computed(() => {
+    this.lang(); // re-run the search when the language changes
     const q = this.search().trim().toLowerCase();
     return this.data
       .materials()
       .map((m) => ({ ...m, holder: this.data.coworkerById(m.holderId)?.name ?? '' }))
-      .filter(
-        (m) => !q || `${m.name} ${m.category} ${m.barcode} ${m.holder}`.toLowerCase().includes(q),
-      );
+      .filter((m) => {
+        const label = this.transloco.translate(`materialType.${m.type}`);
+        return !q || `${label} ${m.name} ${m.barcode} ${m.holder}`.toLowerCase().includes(q);
+      });
   });
 
   toggle() {
@@ -183,13 +195,16 @@ export class Materials {
   }
 
   save() {
-    if (!this.canSave()) return;
-    const res = this.data.registerMaterial(this.name(), this.category(), this.barcode());
+    const type = this.type();
+    if (!this.canSave() || !type) return;
+    const res = this.data.registerMaterial(type, this.name(), this.barcode());
     if (!res.ok) return; // duplicate/empty are already blocked by canSave()
-    this.saved.set(`${res.material.name} (${res.material.barcode})`);
+    this.saved.set(
+      `${this.transloco.translate(`materialType.${res.material.type}`)} (${res.material.barcode})`,
+    );
     // Keep the form open and clear it so the next item can be registered right away.
+    this.type.set('');
     this.name.set('');
-    this.category.set('');
     this.barcode.set('');
   }
 }

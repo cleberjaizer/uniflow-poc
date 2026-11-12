@@ -41,6 +41,18 @@
     "laundryIn": "Sent to laundry",
     "laundryOut": "Back from laundry"
   },
+  "materialType": {
+    "LAB_COAT": "Lab coat",
+    "SAFETY_VEST": "Safety vest",
+    "WORK_APRON": "Work apron",
+    "COLD_JACKET": "Cold jacket",
+    "HARD_HAT": "Hard hat",
+    "SAFETY_GLASSES": "Safety glasses",
+    "STEEL_TOE_BOOTS": "Steel-toe boots",
+    "BATH_TOWEL": "Bath towel",
+    "HAND_TOWEL": "Hand towel",
+    "CLEANING_CLOTH": "Cleaning cloth"
+  },
   "dashboard": {
     "title": "Dashboard",
     "total": "Total items",
@@ -59,7 +71,8 @@
     "title": "Materials",
     "add": "Add",
     "name": "Name",
-    "category": "Category",
+    "type": "Type",
+    "selectType": "Select a type…",
     "barcode": "Barcode",
     "registered": "Registered",
     "status": "Status",
@@ -95,7 +108,7 @@
     "coworker": "Co-worker",
     "selectCoworker": "Select a co-worker…",
     "scan": "Scan or type the item barcode",
-    "typeBarcode": "Barcode (e.g. 783006515091)",
+    "typeBarcode": "Barcode (e.g. 7890000000017)",
     "confirm": "Confirm",
     "showOptions": "Options",
     "hideOptions": "Hide",

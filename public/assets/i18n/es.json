@@ -41,6 +41,18 @@
     "laundryIn": "Enviado a lavandería",
     "laundryOut": "Regresó de lavandería"
   },
+  "materialType": {
+    "LAB_COAT": "Bata de laboratorio",
+    "SAFETY_VEST": "Chaleco de seguridad",
+    "WORK_APRON": "Delantal de trabajo",
+    "COLD_JACKET": "Chaqueta térmica",
+    "HARD_HAT": "Casco de seguridad",
+    "SAFETY_GLASSES": "Gafas de seguridad",
+    "STEEL_TOE_BOOTS": "Botas de seguridad",
+    "BATH_TOWEL": "Toalla de baño",
+    "HAND_TOWEL": "Toalla de manos",
+    "CLEANING_CLOTH": "Paño de limpieza"
+  },
   "dashboard": {
     "title": "Panel",
     "total": "Total de artículos",
@@ -59,7 +71,8 @@
     "title": "Materiales",
     "add": "Agregar",
     "name": "Nombre",
-    "category": "Categoría",
+    "type": "Tipo",
+    "selectType": "Seleccione un tipo…",
     "barcode": "Código de barras",
     "registered": "Registro",
     "status": "Estado",
@@ -95,7 +108,7 @@
     "coworker": "Compañero",
     "selectCoworker": "Seleccione un compañero…",
     "scan": "Escanee o escriba el código de barras del artículo",
-    "typeBarcode": "Código (ej.: 783006515091)",
+    "typeBarcode": "Código (ej.: 7890000000017)",
     "confirm": "Confirmar",
     "showOptions": "Opciones",
     "hideOptions": "Ocultar",

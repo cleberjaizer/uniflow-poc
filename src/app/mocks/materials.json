@@ -1,3 +1,162 @@
 [
-    
+  {
+    "id": "MAT-0001",
+    "type": "LAB_COAT",
+    "name": "Aurora",
+    "barcode": "7890000000017",
+    "registeredAt": "2026-10-01T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0002",
+    "type": "LAB_COAT",
+    "name": "Basalt",
+    "barcode": "7890000000024",
+    "registeredAt": "2026-10-02T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0003",
+    "type": "SAFETY_VEST",
+    "name": "Cedar",
+    "barcode": "7890000000031",
+    "registeredAt": "2026-10-03T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0004",
+    "type": "SAFETY_VEST",
+    "name": "Dune",
+    "barcode": "7890000000048",
+    "registeredAt": "2026-10-04T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0005",
+    "type": "WORK_APRON",
+    "name": "Ember",
+    "barcode": "7890000000055",
+    "registeredAt": "2026-10-05T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0006",
+    "type": "WORK_APRON",
+    "name": "Fjord",
+    "barcode": "7890000000062",
+    "registeredAt": "2026-10-06T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0007",
+    "type": "COLD_JACKET",
+    "name": "Glacier",
+    "barcode": "7890000000079",
+    "registeredAt": "2026-10-07T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0008",
+    "type": "COLD_JACKET",
+    "name": "Harbor",
+    "barcode": "7890000000086",
+    "registeredAt": "2026-10-08T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0009",
+    "type": "HARD_HAT",
+    "name": "Iris",
+    "barcode": "7890000000093",
+    "registeredAt": "2026-10-09T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0010",
+    "type": "HARD_HAT",
+    "name": "Juniper",
+    "barcode": "7890000000109",
+    "registeredAt": "2026-10-10T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0011",
+    "type": "SAFETY_GLASSES",
+    "name": "Krypton",
+    "barcode": "7890000000116",
+    "registeredAt": "2026-10-11T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0012",
+    "type": "SAFETY_GLASSES",
+    "name": "Lagoon",
+    "barcode": "7890000000123",
+    "registeredAt": "2026-10-12T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0013",
+    "type": "STEEL_TOE_BOOTS",
+    "name": "Meadow",
+    "barcode": "7890000000130",
+    "registeredAt": "2026-10-13T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0014",
+    "type": "STEEL_TOE_BOOTS",
+    "name": "Nimbus",
+    "barcode": "7890000000147",
+    "registeredAt": "2026-10-14T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0015",
+    "type": "BATH_TOWEL",
+    "name": "Onyx",
+    "barcode": "7890000000154",
+    "registeredAt": "2026-10-15T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0016",
+    "type": "BATH_TOWEL",
+    "name": "Prairie",
+    "barcode": "7890000000161",
+    "registeredAt": "2026-10-16T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0017",
+    "type": "HAND_TOWEL",
+    "name": "Quartz",
+    "barcode": "7890000000178",
+    "registeredAt": "2026-10-17T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0018",
+    "type": "HAND_TOWEL",
+    "name": "Ridge",
+    "barcode": "7890000000185",
+    "registeredAt": "2026-10-18T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0019",
+    "type": "CLEANING_CLOTH",
+    "name": "Summit",
+    "barcode": "7890000000192",
+    "registeredAt": "2026-10-19T09:00:00.000Z",
+    "status": "available"
+  },
+  {
+    "id": "MAT-0020",
+    "type": "CLEANING_CLOTH",
+    "name": "Tundra",
+    "barcode": "7890000000208",
+    "registeredAt": "2026-10-20T09:00:00.000Z",
+    "status": "available"
+  }
 ]

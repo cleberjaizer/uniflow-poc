@@ -11,6 +11,7 @@ interface Feedback {
   ok: boolean;
   error?: ActionError;
   item?: string;
+  detail?: string;
   barcode?: string;
   coworker?: string;
 }
@@ -45,7 +46,11 @@ interface Feedback {
             <div class="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
               <p class="font-semibold">✔ {{ 'actions.success' | transloco }}</p>
               <p class="mt-1">
-                {{ f.item }} <span class="font-mono text-xs">{{ f.barcode }}</span>
+                {{ 'materialType.' + f.item | transloco }}
+                @if (f.detail) {
+                  <span class="text-xs">{{ f.detail }}</span>
+                }
+                <span class="font-mono text-xs">{{ f.barcode }}</span>
               </p>
               @if (f.coworker) {
                 <p>{{ f.coworker }}</p>
@@ -89,7 +94,8 @@ export class Actions {
       res.ok
         ? {
             ok: true,
-            item: res.material.name,
+            item: res.material.type,
+            detail: res.material.name,
             barcode: res.material.barcode,
             coworker: res.coworker?.name,
           }
