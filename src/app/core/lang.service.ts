@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 
 export const LANGS = [
@@ -13,6 +13,7 @@ const DEFAULT_LANG = 'en';
 @Injectable({ providedIn: 'root' })
 export class LangService {
   private transloco = inject(TranslocoService);
+  readonly current = signal<string>(DEFAULT_LANG);
 
   /**
    * Uses `uniflow.lang` from localStorage if previously set in Settings;
@@ -45,6 +46,7 @@ export class LangService {
   }
 
   private apply(lang: string) {
+    this.current.set(lang);
     this.transloco.setActiveLang(lang);
     document.documentElement.lang = lang;
   }

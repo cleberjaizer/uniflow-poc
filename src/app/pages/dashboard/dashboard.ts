@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ActionType, ItemStatus, MaterialType } from '../../core/models';
 import { DataService } from '../../core/data.service';
+import { LangService } from '../../core/lang.service';
 import { StatusBadge } from '../../shared/status-badge';
 
 const KEYS: Record<ActionType, string> = {
@@ -130,7 +131,7 @@ const CARD_TITLES: Record<CardFilter, string> = {
             </span>
             <span class="font-mono text-xs md:col-span-2">{{ m.barcode }}</span>
             <span class="text-slate-500 md:col-span-2">{{
-              m.registeredAt | date: 'short'
+              m.registeredAt | date: 'short' : '' : lang.current()
             }}</span>
             <span class="md:col-span-2"><app-status-badge [status]="m.status" /></span>
             <span class="text-slate-600 md:col-span-3">{{ m.holder }}</span>
@@ -172,7 +173,9 @@ const CARD_TITLES: Record<CardFilter, string> = {
           <div
             class="grid grid-cols-1 gap-1 border-b border-slate-100 py-2 text-sm md:grid-cols-12 md:gap-2"
           >
-            <span class="text-slate-500 md:col-span-3">{{ r.at | date: 'short' }}</span>
+            <span class="text-slate-500 md:col-span-3">{{
+              r.at | date: 'short' : '' : lang.current()
+            }}</span>
             <span class="font-medium md:col-span-2">{{ keys[r.type] | transloco }}</span>
             <span class="md:col-span-4"
               >{{ r.item ? ('materialType.' + r.item | transloco) : '?' }}
@@ -189,8 +192,9 @@ const CARD_TITLES: Record<CardFilter, string> = {
 })
 export class Dashboard {
   data = inject(DataService);
+  lang = inject(LangService);
   private transloco = inject(TranslocoService);
-  private lang = toSignal(this.transloco.langChanges$);
+  private activeLang = toSignal(this.transloco.langChanges$);
 
   keys = KEYS;
   cardTitles = CARD_TITLES;
@@ -215,7 +219,7 @@ export class Dashboard {
   }
 
   materialRows = computed(() => {
-    this.lang();
+    this.activeLang();
     const card = this.selectedCard();
     const q = this.materialSearch().trim().toLowerCase();
     const tf = this.typeFilter();

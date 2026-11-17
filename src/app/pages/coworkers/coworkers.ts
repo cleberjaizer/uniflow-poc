@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
 import { DataService } from '../../core/data.service';
+import { LangService } from '../../core/lang.service';
 
 @Component({
   selector: 'app-coworkers',
@@ -50,7 +51,7 @@ import { DataService } from '../../core/data.service';
           <span class="font-medium md:col-span-4">{{ c.name }}</span>
           <span class="font-mono text-xs md:col-span-3">{{ c.barcode }}</span>
           <span class="text-slate-500 md:col-span-3">{{
-            c.registeredAt | date: 'short'
+            c.registeredAt | date: 'short' : '' : lang.current()
           }}</span>
           <span class="md:col-span-2">{{ c.held }}</span>
         </div>
@@ -60,6 +61,7 @@ import { DataService } from '../../core/data.service';
 })
 export class Coworkers {
   auth = inject(AuthService);
+  lang = inject(LangService);
   private data = inject(DataService);
   adding = signal(false);
   name = signal('');

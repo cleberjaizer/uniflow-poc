@@ -5,13 +5,19 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
+import localeEs from '@angular/common/locales/es';
+import localePt from '@angular/common/locales/pt';
 import { provideRouter, withHashLocation } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideTransloco } from '@jsverse/transloco';
 import { routes } from './app.routes';
 import { TranslocoHttpLoader } from './core/transloco-loader';
 import { LangService } from './core/lang.service';
+
+registerLocaleData(localePt, 'pt-BR');
+registerLocaleData(localeEs, 'es');
 
 export const appConfig: ApplicationConfig = {
   providers: [

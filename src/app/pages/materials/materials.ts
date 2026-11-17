@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
 import { DataService } from '../../core/data.service';
+import { LangService } from '../../core/lang.service';
 import { MaterialType } from '../../core/models';
 import { BarcodeInput } from '../../shared/barcode-input';
 import { StatusBadge } from '../../shared/status-badge';
@@ -137,7 +138,7 @@ import { StatusBadge } from '../../shared/status-badge';
           </span>
           <span class="font-mono text-xs md:col-span-2">{{ m.barcode }}</span>
           <span class="text-slate-500 md:col-span-2">{{
-            m.registeredAt | date: 'short'
+            m.registeredAt | date: 'short' : '' : lang.current()
           }}</span>
           <span class="md:col-span-2"><app-status-badge [status]="m.status" /></span>
           <span class="text-slate-600 md:col-span-3">{{ m.holder }}</span>
@@ -150,9 +151,10 @@ import { StatusBadge } from '../../shared/status-badge';
 })
 export class Materials {
   auth = inject(AuthService);
+  lang = inject(LangService);
   private data = inject(DataService);
   private transloco = inject(TranslocoService);
-  private lang = toSignal(this.transloco.langChanges$);
+  private activeLang = toSignal(this.transloco.langChanges$);
   scanner = viewChild(BarcodeInput);
   adding = signal(false);
   /** Type/name section; auto-collapses while the camera is on. */
@@ -171,7 +173,7 @@ export class Materials {
   );
 
   rows = computed(() => {
-    this.lang(); // re-run the search when the language changes
+    this.activeLang(); // re-run the search when the language changes
     const q = this.search().trim().toLowerCase();
     return this.data
       .materials()
