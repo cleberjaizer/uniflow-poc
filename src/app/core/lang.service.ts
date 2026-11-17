@@ -8,24 +8,33 @@ export const LANGS = [
 ] as const;
 
 const KEY = 'uniflow.lang';
-const DEFAULT_LANG = 'pt-BR';
+const DEFAULT_LANG = 'en';
 
 @Injectable({ providedIn: 'root' })
 export class LangService {
   private transloco = inject(TranslocoService);
 
-  /** Portuguese (BR) is the default; a language the user picked earlier is remembered. */
+  /**
+   * Uses `uniflow.lang` from localStorage if previously set in Settings;
+   * otherwise detects the browser language (pt -> pt-BR, es -> es, en -> en) and falls back to English.
+   */
   init() {
-    let lang: string | null = null;
+    let saved: string | null = null;
     try {
-      lang = localStorage.getItem(KEY);
+      saved = localStorage.getItem(KEY);
     } catch {}
-    this.set(LANGS.some((l) => l.code === lang) ? lang! : DEFAULT_LANG);
+
+    if (saved && LANGS.some((l) => l.code === saved)) {
+      this.apply(saved);
+      return;
+    }
+
+    this.apply(this.detectBrowserLang());
   }
 
+  /** Called from the Settings page to persist the user's chosen language. */
   set(lang: string) {
-    this.transloco.setActiveLang(lang);
-    document.documentElement.lang = lang;
+    this.apply(lang);
     try {
       localStorage.setItem(KEY, lang);
     } catch {}
@@ -33,5 +42,19 @@ export class LangService {
 
   get active() {
     return this.transloco.getActiveLang();
+  }
+
+  private apply(lang: string) {
+    this.transloco.setActiveLang(lang);
+    document.documentElement.lang = lang;
+  }
+
+  private detectBrowserLang(): string {
+    if (typeof navigator === 'undefined') return DEFAULT_LANG;
+    const raw = (navigator.language || navigator.languages?.[0] || '').toLowerCase();
+    if (raw.startsWith('pt')) return 'pt-BR';
+    if (raw.startsWith('es')) return 'es';
+    if (raw.startsWith('en')) return 'en';
+    return DEFAULT_LANG;
   }
 }

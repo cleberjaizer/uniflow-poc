@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
-import { LANGS, LangService } from '../../core/lang.service';
 
 @Component({
   selector: 'app-login',
@@ -43,19 +42,9 @@ import { LANGS, LangService } from '../../core/lang.service';
           {{ 'login.button' | transloco }}
         </button>
 
-        <div class="flex items-center justify-between text-xs text-slate-400">
-          <span>{{ 'login.demoNote' | transloco }}</span>
-          <select
-            class="rounded border border-slate-200 bg-white px-1 py-0.5"
-            [value]="lang.active"
-            (change)="lang.set($any($event.target).value)"
-            [attr.aria-label]="'lang.label' | transloco"
-          >
-            @for (l of langs; track l.code) {
-              <option [value]="l.code">{{ l.label }}</option>
-            }
-          </select>
-        </div>
+        <p class="text-center text-xs text-slate-400">
+          {{ 'login.demoNote' | transloco }}
+        </p>
       </form>
     </div>
   `,
@@ -63,8 +52,6 @@ import { LANGS, LangService } from '../../core/lang.service';
 export class Login {
   private auth = inject(AuthService);
   private router = inject(Router);
-  lang = inject(LangService);
-  langs = LANGS;
   email = signal('');
   error = signal(false);
 
