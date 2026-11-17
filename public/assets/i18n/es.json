@@ -137,6 +137,8 @@
     "cameraCurrent": "Cámara actual",
     "cameraSelect": "Seleccionar cámara",
     "cameraDefault": "Cámara predeterminada",
+    "cameraBack": "Cámara trasera",
+    "cameraFront": "Cámara frontal",
     "cameraDevice": "Cámara",
     "previewCamera": "Probar cámara",
     "stopPreview": "Detener vista previa",

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AuthService } from '../../core/auth.service';
-import { CameraService } from '../../core/camera.service';
+import { CameraDevice, CameraService } from '../../core/camera.service';
 import { DataService } from '../../core/data.service';
 import { LANGS, LangService } from '../../core/lang.service';
 
@@ -90,10 +90,8 @@ import { LANGS, LangService } from '../../core/lang.service';
             (focus)="ensureDevices()"
           >
             <option value="">{{ 'settings.cameraDefault' | transloco }}</option>
-            @for (d of camera.devices(); track d.deviceId; let i = $index) {
-              <option [value]="d.deviceId">
-                {{ d.label || ('settings.cameraDevice' | transloco) + ' ' + (i + 1) }}
-              </option>
+            @for (d of cameraOptions(); track d.deviceId) {
+              <option [value]="d.deviceId">{{ d.displayLabel }}</option>
             }
           </select>
         </label>
@@ -171,15 +169,36 @@ export class Settings implements OnDestroy {
   previewOn = signal(false);
   previewError = signal(false);
 
-  currentCameraLabel = computed(() => {
+  cameraOptions = computed(() => {
     this.activeLang();
-    const id = this.camera.selectedId();
-    if (!id) return this.transloco.translate('settings.cameraDefault');
-    const idx = this.camera.devices().findIndex((d) => d.deviceId === id);
-    if (idx === -1) return this.transloco.translate('settings.cameraDefault');
-    const dev = this.camera.devices()[idx];
-    return dev.label || `${this.transloco.translate('settings.cameraDevice')} ${idx + 1}`;
+    return this.camera.devices().map((d) => ({
+      deviceId: d.deviceId,
+      displayLabel: this.formatCameraLabel(d),
+    }));
   });
+
+  currentCameraLabel = computed(() => {
+    const id = this.camera.selectedId();
+    if (!id) {
+      this.activeLang();
+      return this.transloco.translate('settings.cameraDefault');
+    }
+    const found = this.cameraOptions().find((d) => d.deviceId === id);
+    return found ? found.displayLabel : this.transloco.translate('settings.cameraDefault');
+  });
+
+  private formatCameraLabel(d: CameraDevice): string {
+    if (d.facing === 'back') {
+      const base = this.transloco.translate('settings.cameraBack');
+      return d.facingTotal > 1 ? `${base} ${d.facingIndex}` : base;
+    }
+    if (d.facing === 'front') {
+      const base = this.transloco.translate('settings.cameraFront');
+      return d.facingTotal > 1 ? `${base} ${d.facingIndex}` : base;
+    }
+    const base = this.transloco.translate('settings.cameraDevice');
+    return `${base} ${d.facingIndex}`;
+  }
 
   constructor() {
     void this.camera.refreshDevices();

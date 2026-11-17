@@ -137,6 +137,8 @@
     "cameraCurrent": "Current camera",
     "cameraSelect": "Select camera",
     "cameraDefault": "Default camera",
+    "cameraBack": "Back camera",
+    "cameraFront": "Front camera",
     "cameraDevice": "Camera",
     "previewCamera": "Preview camera",
     "stopPreview": "Stop preview",
