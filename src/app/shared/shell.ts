@@ -19,7 +19,10 @@ interface NavItem {
       <!-- Desktop: horizontal top bar. Mobile: compact header + bottom tab bar. -->
       <header class="sticky top-0 z-20 border-b border-slate-200 bg-white/90 backdrop-blur">
         <div class="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-          <a routerLink="/dashboard" class="text-lg font-bold text-brand-600">UniFlow</a>
+          <a routerLink="/dashboard" class="flex items-center gap-2 text-lg font-bold text-slate-900">
+            <img src="icons/icon-72x72.png" alt="" width="28" height="28" class="h-7 w-7 rounded-lg" />
+            <span>Uni<span class="text-brand-600">Flow</span></span>
+          </a>
 
           <nav class="ml-6 hidden gap-1 md:flex">
             @for (n of visibleNav(); track n.path) {
