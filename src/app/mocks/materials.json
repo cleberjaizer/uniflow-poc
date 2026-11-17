@@ -4,7 +4,7 @@
     "type": "LAB_COAT",
     "name": "Aurora",
     "barcode": "7890000000017",
-    "registeredAt": "2026-10-01T09:00:00.000Z",
+    "registeredAt": "2026-10-01T08:14:22.000Z",
     "status": "available"
   },
   {
@@ -12,7 +12,7 @@
     "type": "LAB_COAT",
     "name": "Basalt",
     "barcode": "7890000000024",
-    "registeredAt": "2026-10-02T09:00:00.000Z",
+    "registeredAt": "2026-10-02T11:42:09.000Z",
     "status": "available"
   },
   {
@@ -20,7 +20,7 @@
     "type": "SAFETY_VEST",
     "name": "Cedar",
     "barcode": "7890000000031",
-    "registeredAt": "2026-10-03T09:00:00.000Z",
+    "registeredAt": "2026-10-03T14:27:51.000Z",
     "status": "available"
   },
   {
@@ -28,7 +28,7 @@
     "type": "SAFETY_VEST",
     "name": "Dune",
     "barcode": "7890000000048",
-    "registeredAt": "2026-10-04T09:00:00.000Z",
+    "registeredAt": "2026-10-04T09:35:18.000Z",
     "status": "available"
   },
   {
@@ -36,7 +36,7 @@
     "type": "WORK_APRON",
     "name": "Ember",
     "barcode": "7890000000055",
-    "registeredAt": "2026-10-05T09:00:00.000Z",
+    "registeredAt": "2026-10-05T16:08:44.000Z",
     "status": "available"
   },
   {
@@ -44,7 +44,7 @@
     "type": "WORK_APRON",
     "name": "Fjord",
     "barcode": "7890000000062",
-    "registeredAt": "2026-10-06T09:00:00.000Z",
+    "registeredAt": "2026-10-06T10:53:12.000Z",
     "status": "available"
   },
   {
@@ -52,7 +52,7 @@
     "type": "COLD_JACKET",
     "name": "Glacier",
     "barcode": "7890000000079",
-    "registeredAt": "2026-10-07T09:00:00.000Z",
+    "registeredAt": "2026-10-07T13:19:37.000Z",
     "status": "available"
   },
   {
@@ -60,7 +60,7 @@
     "type": "COLD_JACKET",
     "name": "Harbor",
     "barcode": "7890000000086",
-    "registeredAt": "2026-10-08T09:00:00.000Z",
+    "registeredAt": "2026-10-08T15:46:05.000Z",
     "status": "available"
   },
   {
@@ -68,7 +68,7 @@
     "type": "HARD_HAT",
     "name": "Iris",
     "barcode": "7890000000093",
-    "registeredAt": "2026-10-09T09:00:00.000Z",
+    "registeredAt": "2026-10-09T07:58:29.000Z",
     "status": "available"
   },
   {
@@ -76,7 +76,7 @@
     "type": "HARD_HAT",
     "name": "Juniper",
     "barcode": "7890000000109",
-    "registeredAt": "2026-10-10T09:00:00.000Z",
+    "registeredAt": "2026-10-10T12:11:48.000Z",
     "status": "available"
   },
   {
@@ -84,7 +84,7 @@
     "type": "SAFETY_GLASSES",
     "name": "Krypton",
     "barcode": "7890000000116",
-    "registeredAt": "2026-10-11T09:00:00.000Z",
+    "registeredAt": "2026-10-11T17:23:16.000Z",
     "status": "available"
   },
   {
@@ -92,7 +92,7 @@
     "type": "SAFETY_GLASSES",
     "name": "Lagoon",
     "barcode": "7890000000123",
-    "registeredAt": "2026-10-12T09:00:00.000Z",
+    "registeredAt": "2026-10-12T08:49:53.000Z",
     "status": "available"
   },
   {
@@ -100,7 +100,7 @@
     "type": "STEEL_TOE_BOOTS",
     "name": "Meadow",
     "barcode": "7890000000130",
-    "registeredAt": "2026-10-13T09:00:00.000Z",
+    "registeredAt": "2026-10-13T14:04:31.000Z",
     "status": "available"
   },
   {
@@ -108,7 +108,7 @@
     "type": "STEEL_TOE_BOOTS",
     "name": "Nimbus",
     "barcode": "7890000000147",
-    "registeredAt": "2026-10-14T09:00:00.000Z",
+    "registeredAt": "2026-10-14T11:17:08.000Z",
     "status": "available"
   },
   {
@@ -116,7 +116,7 @@
     "type": "BATH_TOWEL",
     "name": "Onyx",
     "barcode": "7890000000154",
-    "registeredAt": "2026-10-15T09:00:00.000Z",
+    "registeredAt": "2026-10-15T15:32:40.000Z",
     "status": "available"
   },
   {
@@ -124,7 +124,7 @@
     "type": "BATH_TOWEL",
     "name": "Prairie",
     "barcode": "7890000000161",
-    "registeredAt": "2026-10-16T09:00:00.000Z",
+    "registeredAt": "2026-10-16T09:21:14.000Z",
     "status": "available"
   },
   {
@@ -132,7 +132,7 @@
     "type": "HAND_TOWEL",
     "name": "Quartz",
     "barcode": "7890000000178",
-    "registeredAt": "2026-10-17T09:00:00.000Z",
+    "registeredAt": "2026-10-17T13:45:59.000Z",
     "status": "available"
   },
   {
@@ -140,7 +140,7 @@
     "type": "HAND_TOWEL",
     "name": "Ridge",
     "barcode": "7890000000185",
-    "registeredAt": "2026-10-18T09:00:00.000Z",
+    "registeredAt": "2026-10-18T16:38:27.000Z",
     "status": "available"
   },
   {
@@ -148,7 +148,7 @@
     "type": "CLEANING_CLOTH",
     "name": "Summit",
     "barcode": "7890000000192",
-    "registeredAt": "2026-10-19T09:00:00.000Z",
+    "registeredAt": "2026-10-19T10:06:42.000Z",
     "status": "available"
   },
   {
@@ -156,7 +156,7 @@
     "type": "CLEANING_CLOTH",
     "name": "Tundra",
     "barcode": "7890000000208",
-    "registeredAt": "2026-10-20T09:00:00.000Z",
+    "registeredAt": "2026-10-20T14:51:19.000Z",
     "status": "available"
   }
 ]

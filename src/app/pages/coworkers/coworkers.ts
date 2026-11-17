@@ -50,7 +50,7 @@ import { DataService } from '../../core/data.service';
           <span class="font-medium md:col-span-4">{{ c.name }}</span>
           <span class="font-mono text-xs md:col-span-3">{{ c.barcode }}</span>
           <span class="text-slate-500 md:col-span-3">{{
-            c.registeredAt | date: 'mediumDate'
+            c.registeredAt | date: 'short'
           }}</span>
           <span class="md:col-span-2">{{ c.held }}</span>
         </div>

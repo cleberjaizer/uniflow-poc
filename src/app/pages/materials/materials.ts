@@ -137,7 +137,7 @@ import { StatusBadge } from '../../shared/status-badge';
           </span>
           <span class="font-mono text-xs md:col-span-2">{{ m.barcode }}</span>
           <span class="text-slate-500 md:col-span-2">{{
-            m.registeredAt | date: 'mediumDate'
+            m.registeredAt | date: 'short'
           }}</span>
           <span class="md:col-span-2"><app-status-badge [status]="m.status" /></span>
           <span class="text-slate-600 md:col-span-3">{{ m.holder }}</span>
@@ -179,7 +179,8 @@ export class Materials {
       .filter((m) => {
         const label = this.transloco.translate(`materialType.${m.type}`);
         return !q || `${label} ${m.name} ${m.barcode} ${m.holder}`.toLowerCase().includes(q);
-      });
+      })
+      .sort((a, b) => b.registeredAt.localeCompare(a.registeredAt));
   });
 
   toggle() {

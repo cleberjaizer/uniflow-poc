@@ -73,7 +73,9 @@ export class DataService {
   private store = signal<Store>(this.load());
 
   readonly coworkers = computed(() => this.store().coworkers);
-  readonly materials = computed(() => this.store().materials);
+  readonly materials = computed(() =>
+    [...this.store().materials].sort((a, b) => b.registeredAt.localeCompare(a.registeredAt)),
+  );
   readonly history = computed(() =>
     [...this.store().history].sort((a, b) => b.at.localeCompare(a.at)),
   );
