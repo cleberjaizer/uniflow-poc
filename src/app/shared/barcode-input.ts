@@ -21,21 +21,27 @@ import { CameraService } from '../core/camera.service';
   imports: [FormsModule, TranslocoPipe],
   template: `
     <div class="space-y-3">
-      <form class="flex gap-2" (ngSubmit)="submit()">
-        <input
-          class="input"
-          name="code"
-          autocomplete="off"
-          autocapitalize="characters"
-          [placeholder]="'actions.typeBarcode' | transloco"
-          [(ngModel)]="code"
-        />
-        <button class="btn btn-primary" type="submit">{{ submitKey() | transloco }}</button>
-      </form>
+      @if (!hideInputWhenCameraOn() || !cameraOn()) {
+        <form class="flex gap-2" (ngSubmit)="submit()">
+          <input
+            class="input"
+            name="code"
+            autocomplete="off"
+            autocapitalize="characters"
+            [placeholder]="'actions.typeBarcode' | transloco"
+            [disabled]="disabled()"
+            [(ngModel)]="code"
+          />
+          <button class="btn btn-primary" type="submit" [disabled]="disabled()">
+            {{ submitKey() | transloco }}
+          </button>
+        </form>
+      }
 
       <button
         type="button"
         class="btn btn-secondary w-full sm:w-auto"
+        [disabled]="disabled()"
         (click)="cameraOn() ? stop() : start()"
       >
         📷 {{ (cameraOn() ? 'actions.stopCamera' : 'actions.useCamera') | transloco }}
@@ -64,6 +70,10 @@ export class BarcodeInput implements OnDestroy {
   autoStop = input(false);
   /** Label of the submit button for the typed code. */
   submitKey = input('actions.confirm');
+  /** Hide the text input and submit button while the camera scanner is active. */
+  hideInputWhenCameraOn = input(false);
+  /** Disable the barcode input and buttons. */
+  disabled = input(false);
   code = '';
   cameraOn = signal(false);
   cameraError = signal(false);
@@ -73,6 +83,7 @@ export class BarcodeInput implements OnDestroy {
   private lastAt = 0;
 
   submit() {
+    if (this.disabled()) return;
     const v = this.code.trim();
     if (!v) return;
     this.scanned.emit(v);

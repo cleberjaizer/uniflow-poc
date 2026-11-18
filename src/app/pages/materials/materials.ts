@@ -42,6 +42,7 @@ import { StatusBadge } from '../../shared/status-badge';
           <button
             type="button"
             class="btn btn-secondary ml-auto px-2 py-1 text-xs"
+            [disabled]="!!saved()"
             (click)="detailsOpen.set(!detailsOpen())"
             [attr.aria-expanded]="detailsOpen()"
           >
@@ -54,7 +55,12 @@ import { StatusBadge } from '../../shared/status-badge';
           <div class="grid gap-3 sm:grid-cols-2">
             <label class="block text-sm font-medium">
               {{ 'materials.type' | transloco }}
-              <select class="input mt-1" [ngModel]="type()" (ngModelChange)="type.set($event)">
+              <select
+                class="input mt-1"
+                [disabled]="!!saved()"
+                [ngModel]="type()"
+                (ngModelChange)="type.set($event)"
+              >
                 <option value="">{{ 'materials.selectType' | transloco }}</option>
                 @for (t of types; track t) {
                   <option [value]="t">{{ 'materialType.' + t | transloco }}</option>
@@ -67,6 +73,7 @@ import { StatusBadge } from '../../shared/status-badge';
                 class="input mt-1"
                 name="name"
                 autocomplete="off"
+                [disabled]="!!saved()"
                 [ngModel]="name()"
                 (ngModelChange)="name.set($event)"
               />
@@ -75,25 +82,40 @@ import { StatusBadge } from '../../shared/status-badge';
         }
 
         <div>
-          <p class="mb-2 text-sm font-medium">{{ 'materials.scanBarcode' | transloco }}</p>
+          @if (!cameraOn()) {
+            <p class="mb-2 text-sm font-medium">{{ 'materials.scanBarcode' | transloco }}</p>
+          }
           <app-barcode-input
             submitKey="materials.useCode"
+            [hideInputWhenCameraOn]="true"
+            [disabled]="!!saved()"
             (scanned)="setBarcode($event)"
-            (cameraActive)="detailsOpen.set(!$event)"
+            (cameraActive)="onCameraActive($event)"
           />
         </div>
 
-        <div class="rounded-lg bg-slate-50 p-3 text-sm">
-          <span class="text-slate-500">{{ 'materials.barcode' | transloco }}:</span>
-          @if (barcode()) {
-            <span class="ml-1 font-mono font-semibold">{{ barcode() }}</span>
-            @if (duplicate()) {
-              <p class="mt-1 text-red-600">{{ 'materials.error.barcodeDuplicate' | transloco }}</p>
+        @if (!saved()) {
+          <div
+            class="rounded-lg p-3 text-sm transition"
+            [class]="
+              barcode() && !duplicate()
+                ? 'bg-brand-100 text-brand-700'
+                : barcode() && duplicate()
+                  ? 'bg-red-50 text-red-800'
+                  : 'bg-slate-50 text-slate-500'
+            "
+          >
+            <span>{{ 'materials.barcode' | transloco }}:</span>
+            @if (barcode()) {
+              <span class="ml-1 font-mono font-semibold">{{ barcode() }}</span>
+              @if (duplicate()) {
+                <p class="mt-1 text-red-600">{{ 'materials.error.barcodeDuplicate' | transloco }}</p>
+              }
+            } @else {
+              <span class="ml-1 text-slate-400">{{ 'materials.noBarcode' | transloco }}</span>
             }
-          } @else {
-            <span class="ml-1 text-slate-400">{{ 'materials.noBarcode' | transloco }}</span>
-          }
-        </div>
+          </div>
+        }
 
         @if (saved(); as s) {
           <p class="rounded-lg bg-emerald-50 p-3 text-sm text-emerald-800">
@@ -102,9 +124,15 @@ import { StatusBadge } from '../../shared/status-badge';
         }
 
         <div class="flex justify-end">
-          <button class="btn btn-primary" type="button" [disabled]="!canSave()" (click)="save()">
-            {{ 'materials.save' | transloco }}
-          </button>
+          @if (saved()) {
+            <button class="btn btn-primary" type="button" (click)="resetForm()">
+              + {{ 'materials.add' | transloco }}
+            </button>
+          } @else {
+            <button class="btn btn-primary" type="button" [disabled]="!canSave()" (click)="save()">
+              {{ 'materials.save' | transloco }}
+            </button>
+          }
         </div>
       </section>
     }
@@ -159,6 +187,7 @@ export class Materials {
   adding = signal(false);
   /** Type/name section; auto-collapses while the camera is on. */
   detailsOpen = signal(true);
+  cameraOn = signal(false);
   types = Object.values(MaterialType);
   search = signal('');
   type = signal<MaterialType | ''>('');
@@ -187,12 +216,27 @@ export class Materials {
 
   toggle() {
     this.adding.update((v) => !v);
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.scanner()?.stop();
+    this.cameraOn.set(false);
+    this.detailsOpen.set(true);
+    this.type.set('');
+    this.name.set('');
+    this.barcode.set('');
     this.saved.set('');
   }
 
+  onCameraActive(active: boolean) {
+    this.cameraOn.set(active);
+    this.detailsOpen.set(!active);
+  }
+
   setBarcode(code: string) {
+    if (this.saved()) return;
     this.barcode.set(code.trim());
-    this.saved.set('');
     // Stop the camera only when the barcode is usable; on a duplicate keep scanning.
     if (this.barcode() && !this.duplicate()) this.scanner()?.stop();
   }
@@ -202,12 +246,10 @@ export class Materials {
     if (!this.canSave() || !type) return;
     const res = this.data.registerMaterial(type, this.name(), this.barcode());
     if (!res.ok) return; // duplicate/empty are already blocked by canSave()
+    this.scanner()?.stop();
     this.saved.set(
       `${this.transloco.translate(`materialType.${res.material.type}`)} (${res.material.barcode})`,
     );
-    // Keep the form open and clear it so the next item can be registered right away.
-    this.type.set('');
-    this.name.set('');
     this.barcode.set('');
   }
 }
