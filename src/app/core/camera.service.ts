@@ -16,6 +16,11 @@ export interface CameraDevice {
 
 @Injectable({ providedIn: 'root' })
 export class CameraService {
+  readonly isMobile =
+    typeof navigator !== 'undefined' &&
+    (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+      (navigator as { userAgentData?: { mobile?: boolean } }).userAgentData?.mobile === true);
+
   /** Empty string means the browser's default camera is used. */
   readonly selectedId = signal<string>(this.read());
   readonly devices = signal<CameraDevice[]>([]);

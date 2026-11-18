@@ -171,9 +171,9 @@ export class Settings implements OnDestroy {
 
   cameraOptions = computed(() => {
     this.activeLang();
-    return this.camera.devices().map((d) => ({
+    return this.camera.devices().map((d, i) => ({
       deviceId: d.deviceId,
-      displayLabel: this.formatCameraLabel(d),
+      displayLabel: this.formatCameraLabel(d, i),
     }));
   });
 
@@ -187,7 +187,10 @@ export class Settings implements OnDestroy {
     return found ? found.displayLabel : this.transloco.translate('settings.cameraDefault');
   });
 
-  private formatCameraLabel(d: CameraDevice): string {
+  private formatCameraLabel(d: CameraDevice, index: number): string {
+    if (!this.camera.isMobile) {
+      return d.label || `${this.transloco.translate('settings.cameraDevice')} ${index + 1}`;
+    }
     if (d.facing === 'back') {
       const base = this.transloco.translate('settings.cameraBack');
       return d.facingTotal > 1 ? `${base} ${d.facingIndex}` : base;
@@ -196,8 +199,7 @@ export class Settings implements OnDestroy {
       const base = this.transloco.translate('settings.cameraFront');
       return d.facingTotal > 1 ? `${base} ${d.facingIndex}` : base;
     }
-    const base = this.transloco.translate('settings.cameraDevice');
-    return `${base} ${d.facingIndex}`;
+    return `${this.transloco.translate('settings.cameraDevice')} ${index + 1}`;
   }
 
   constructor() {
