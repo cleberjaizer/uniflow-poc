@@ -30,22 +30,29 @@ import { CameraService } from '../core/camera.service';
             autocapitalize="characters"
             [placeholder]="'actions.typeBarcode' | transloco"
             [disabled]="disabled()"
-            [(ngModel)]="code"
+            [ngModel]="code()"
+            (ngModelChange)="code.set($event)"
           />
-          <button class="btn btn-primary" type="submit" [disabled]="disabled()">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="disabled() || !canSubmit() || !code().trim()"
+          >
             {{ submitKey() | transloco }}
           </button>
         </form>
       }
 
-      <button
-        type="button"
-        class="btn btn-secondary w-full sm:w-auto"
-        [disabled]="disabled()"
-        (click)="cameraOn() ? stop() : start()"
-      >
-        📷 {{ (cameraOn() ? 'actions.stopCamera' : 'actions.useCamera') | transloco }}
-      </button>
+      @if (showCameraButton()) {
+        <button
+          type="button"
+          class="btn btn-secondary w-full sm:w-auto"
+          [disabled]="disabled()"
+          (click)="cameraOn() ? stop() : start()"
+        >
+          📷 {{ (cameraOn() ? 'actions.stopCamera' : 'actions.useCamera') | transloco }}
+        </button>
+      }
 
       @if (cameraError()) {
         <p class="text-sm text-red-600">{{ 'actions.cameraError' | transloco }}</p>
@@ -74,7 +81,11 @@ export class BarcodeInput implements OnDestroy {
   hideInputWhenCameraOn = input(false);
   /** Disable the barcode input and buttons. */
   disabled = input(false);
-  code = '';
+  /** Whether the submit button is allowed to be enabled (in addition to having non-empty code). */
+  canSubmit = input(true);
+  /** Whether the camera toggle button should be visible. */
+  showCameraButton = input(true);
+  code = signal('');
   cameraOn = signal(false);
   cameraError = signal(false);
   private video = viewChild.required<ElementRef<HTMLVideoElement>>('video');
@@ -83,15 +94,17 @@ export class BarcodeInput implements OnDestroy {
   private lastAt = 0;
 
   submit() {
-    if (this.disabled()) return;
-    const v = this.code.trim();
+    if (this.disabled() || !this.canSubmit()) return;
+    const v = this.code().trim();
     if (!v) return;
     this.scanned.emit(v);
-    this.code = '';
+    this.code.set('');
   }
 
   async start() {
     this.cameraError.set(false);
+    this.lastCode = '';
+    this.lastAt = 0;
     try {
       // Loaded on demand: the scanner library is large and only needed when the camera is used.
       const { BrowserMultiFormatReader } = await import('@zxing/browser');
@@ -125,6 +138,12 @@ export class BarcodeInput implements OnDestroy {
     this.controls = undefined;
     this.cameraOn.set(false);
     this.cameraActive.emit(false);
+  }
+
+  reset() {
+    this.stop();
+    this.code.set('');
+    this.cameraError.set(false);
   }
 
   ngOnDestroy() {

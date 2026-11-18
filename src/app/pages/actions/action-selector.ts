@@ -86,6 +86,8 @@ export class ActionSelector {
   coworkerId = model.required<string>();
   /** Available coworkers for the coworker selector. */
   coworkers = input.required<Coworker[]>();
+  /** Emits whenever the user clicks an action button. */
+  actionSelected = output<FlowAction>();
   /**
    * When true the panel collapses automatically.
    * Caller sets this to true when the camera turns on and false when it turns off.
@@ -116,5 +118,6 @@ export class ActionSelector {
 
   select(t: FlowAction) {
     this.type.set(t);
+    this.actionSelected.emit(t);
   }
 }

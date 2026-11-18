@@ -1,4 +1,4 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { ActionError, ActionType } from '../../core/models';
 import { DataService } from '../../core/data.service';
@@ -29,13 +29,19 @@ interface Feedback {
           #selector
           [actions]="actions"
           [(type)]="type"
+          (actionSelected)="resetForm()"
           [(coworkerId)]="coworkerId"
           [coworkers]="data.coworkers()"
         />
 
         <div>
           <p class="mb-2 text-sm font-medium">{{ 'actions.scan' | transloco }}</p>
-          <app-barcode-input (scanned)="run($event)" (cameraActive)="onCameraActive($event)" />
+          <app-barcode-input
+            [showCameraButton]="canScan()"
+            [canSubmit]="canScan()"
+            (scanned)="run($event)"
+            (cameraActive)="onCameraActive($event)"
+          />
         </div>
       </section>
 
@@ -73,6 +79,7 @@ export class Actions {
   type = signal<FlowAction>('checkout');
   coworkerId = signal('');
   feedback = signal<Feedback | null>(null);
+  canScan = computed(() => this.type() !== 'checkout' || !!this.coworkerId());
 
   selector = viewChild.required(ActionSelector);
   scanner = viewChild.required(BarcodeInput);
@@ -84,7 +91,16 @@ export class Actions {
     { type: 'laundry-out', key: 'actions.laundryOut', icon: '✅' },
   ];
 
+  resetForm() {
+    this.coworkerId.set('');
+    this.feedback.set(null);
+    this.scanner().reset();
+  }
+
   onCameraActive(active: boolean) {
+    if (active) {
+      this.feedback.set(null);
+    }
     this.selector().onCameraChanged(active);
   }
 
@@ -101,7 +117,6 @@ export class Actions {
           }
         : { ok: false, error: res.error },
     );
-    // Stop the camera only after a successful action; on errors keep scanning.
-    if (res.ok) this.scanner().stop();
+    this.scanner().stop();
   }
 }

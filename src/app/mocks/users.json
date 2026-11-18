@@ -1,6 +1,7 @@
 [
   { "email": "cleber.jaizer@gmail.com", "name": "Cleber Jaizer", "role": "admin" },
   { "email": "cleberjaizer@gmail.com", "name": "Cleber Jaizer", "role": "admin" },
+  { "email": "cleber.campos@gmail.com", "name": "Cleber Camposs", "role": "user" },
   { "email": "fabio.dauer@gmail.com", "name": "Fábio Dauer", "role": "admin" },
   { "email": "andre.kreitlow@gmail.com", "name": "André Kreitlow", "role": "user" },
   { "email": "reedlei.nagornni@gmail.com", "name": "Reedlei Nagornni", "role": "admin" }
