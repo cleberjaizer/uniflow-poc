@@ -19,60 +19,7 @@ interface Feedback {
 @Component({
   selector: 'app-actions',
   imports: [TranslocoPipe, BarcodeInput, ActionSelector],
-  template: `
-    <h1 class="mb-4 text-2xl font-bold">{{ 'actions.title' | transloco }}</h1>
-
-    <div class="grid gap-6 lg:grid-cols-2">
-      <section class="card space-y-4">
-        <!-- Collapsible action selector — auto-collapses when camera is active -->
-        <app-action-selector
-          #selector
-          [actions]="actions"
-          [(type)]="type"
-          (actionSelected)="resetForm()"
-          [(coworkerId)]="coworkerId"
-          [coworkers]="data.coworkers()"
-        />
-
-        <div>
-          <p class="mb-2 text-sm font-medium">{{ 'actions.scan' | transloco }}</p>
-          <app-barcode-input
-            [showCameraButton]="canScan()"
-            [canSubmit]="canScan()"
-            (scanned)="run($event)"
-            (cameraActive)="onCameraActive($event)"
-          />
-        </div>
-      </section>
-
-      <section class="card">
-        <h2 class="mb-3 text-lg font-semibold">{{ 'actions.lastResult' | transloco }}</h2>
-        @if (feedback(); as f) {
-          @if (f.ok) {
-            <div class="rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
-              <p class="font-semibold">✔ {{ 'actions.success' | transloco }}</p>
-              <p class="mt-1">
-                {{ 'materialType.' + f.item | transloco }}
-                @if (f.detail) {
-                  <span class="text-xs">{{ f.detail }}</span>
-                }
-                <span class="font-mono text-xs">{{ f.barcode }}</span>
-              </p>
-              @if (f.coworker) {
-                <p>{{ f.coworker }}</p>
-              }
-            </div>
-          } @else {
-            <div class="rounded-lg bg-red-50 p-4 text-sm text-red-800">
-              <p class="font-semibold">✖ {{ 'actions.error.' + f.error | transloco }}</p>
-            </div>
-          }
-        } @else {
-          <p class="text-sm text-slate-400">{{ 'actions.noResult' | transloco }}</p>
-        }
-      </section>
-    </div>
-  `,
+  templateUrl: './actions.html',
 })
 export class Actions {
   data = inject(DataService);

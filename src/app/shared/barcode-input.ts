@@ -19,54 +19,7 @@ import { CameraService } from '../core/camera.service';
 @Component({
   selector: 'app-barcode-input',
   imports: [FormsModule, TranslocoPipe],
-  template: `
-    <div class="space-y-3">
-      @if (!hideInputWhenCameraOn() || !cameraOn()) {
-        <form class="flex gap-2" (ngSubmit)="submit()">
-          <input
-            class="input"
-            name="code"
-            autocomplete="off"
-            autocapitalize="characters"
-            [placeholder]="'actions.typeBarcode' | transloco"
-            [disabled]="disabled()"
-            [ngModel]="code()"
-            (ngModelChange)="code.set($event)"
-          />
-          <button
-            class="btn btn-primary"
-            type="submit"
-            [disabled]="disabled() || !canSubmit() || !code().trim()"
-          >
-            {{ submitKey() | transloco }}
-          </button>
-        </form>
-      }
-
-      @if (showCameraButton()) {
-        <button
-          type="button"
-          class="btn btn-secondary w-full sm:w-auto"
-          [disabled]="disabled()"
-          (click)="cameraOn() ? stop() : start()"
-        >
-          📷 {{ (cameraOn() ? 'actions.stopCamera' : 'actions.useCamera') | transloco }}
-        </button>
-      }
-
-      @if (cameraError()) {
-        <p class="text-sm text-red-600">{{ 'actions.cameraError' | transloco }}</p>
-      }
-
-      <video
-        #video
-        class="aspect-video w-full max-w-md rounded-xl bg-black object-cover"
-        [class.hidden]="!cameraOn()"
-        playsinline
-        muted
-      ></video>
-    </div>
-  `,
+  templateUrl: './barcode-input.html',
 })
 export class BarcodeInput implements OnDestroy {
   private camera = inject(CameraService);

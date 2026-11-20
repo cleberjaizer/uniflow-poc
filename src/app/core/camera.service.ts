@@ -91,7 +91,9 @@ export class CameraService {
 
   private detectFacing(label: string): CameraFacing {
     const lower = label.toLowerCase();
-    if (/facing\s*back|\bback\b|\brear\b|\benvironment\b|\btraseir[ao]\b|\btraser[ao]\b/.test(lower)) {
+    if (
+      /facing\s*back|\bback\b|\brear\b|\benvironment\b|\btraseir[ao]\b|\btraser[ao]\b/.test(lower)
+    ) {
       return 'back';
     }
     if (/facing\s*front|\bfront\b|\buser\b|\bselfie\b|\bfrontal\b/.test(lower)) {
